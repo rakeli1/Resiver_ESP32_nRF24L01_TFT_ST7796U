@@ -9,25 +9,17 @@ TFT_eSPI tft = TFT_eSPI();
 
 void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit)
 {
-  int rep = 0;
-  int32_t dubX = x0;
-  while(rep < repit)
+  for(int i = 0; i < repit; i++)
  {
-  tft.drawFastVLine(dubX, y0, visota, color);
-  dubX++;
-  rep++;
+  tft.drawFastVLine(x0 + i, y0, visota, color);
  }
 }
 
 void drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color, int repit)
 {
-  int rep = 0;
-  int32_t dubY = y0;
-  while(rep < repit)
+  for(int i = 0; i < repit; i++)
  {
-  tft.drawFastHLine(x0, dubY, chirina, color);
-  dubY++;
-  rep++;
+  tft.drawFastHLine(x0, y0 + 1, chirina, color);
  }
 }
 
