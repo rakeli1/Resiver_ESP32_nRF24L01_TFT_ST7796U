@@ -1,10 +1,13 @@
 #pragma once
 #include "Page.h"
+#include "DataReciver.h"
+#include <stdint.h>
+#include <Arduino.h> 
 
 class MainPage : public Page
 {
  public:
-      MainPage();
+      MainPage(DataReciver *datareciver);
       ~MainPage();
        
                 //МЕТОДЫ СТРАНИЦЫ
@@ -23,6 +26,7 @@ class MainPage : public Page
 
 
       private:
+           
            void drawMainValues();
            void drawWeatherIcon();
            void drawBateryIcon();
@@ -30,23 +34,24 @@ class MainPage : public Page
            void drawDataTime();
            void drawWindows();  // ЭТО НАБРОСОК РЕШАЮ ПОЗЖЕ ЛИБО РИСОВАТЬ ЛИБО БРАТЬ ГОТОВУЮ КАРТИНКУ
 
-           float temperature;
-           float humidity;
-           float pressure;
-           int batteryLevel;
-           String currentData;
-           String currentTime;
-           String dayOfWeek;
+           DataReciver *datareciver;
+           float temperature = 0;
+           float humidity = 0;
+           float pressure = 0;
+           int batteryLevel = 50;
+           String currentData = "--";
+           String currentTime = "-- : --";
+           String dayOfWeek = " ----";
 
-           uint8_t hour;
-           uint8_t minute;
-           uint8_t second;
+           uint8_t hour = 0;
+           uint8_t minute = 0;
+           uint8_t second = 0;
 
-           uint8_t day;
-           uint8_t month;
-           uint16_t year;
+           uint8_t day = 00;
+           uint8_t month = 00;
+           uint16_t year = 00;
 
-           unsigned long lastRedraw; // чтобы не рисовать дисплей 50 раз в секунду
+           unsigned long needRedraw; // чтобы не рисовать дисплей 50 раз в секунду
            const unsigned long redrawInterval = 500; // 500мс
           
 };
