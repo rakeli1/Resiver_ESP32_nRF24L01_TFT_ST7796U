@@ -6,8 +6,16 @@
 #include "DataReciver.h"
 
 RF24 radio(2,4);
-DataReciver datareciver(&radio); // обьект посредник между радиопередатчиком и страницами использующими данные с передатчика
+DataReciver datareciver(radio); // обьект посредник между радиопередатчиком и страницами использующими данные с передатчика
 TFT_eSPI tft = TFT_eSPI(); 
+
+enum DataNRF
+{
+   TEMPERATURE,
+   HUMIDITY,
+   PRESSURE,
+   BATLEV
+};
 
 void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit)
 {
@@ -44,5 +52,9 @@ void loop()
   tft.fillRect(0, 0, 20, 20, TFT_DARKGREEN);  // ориентир setRotation()
   tft.drawRect(170, 5, 40, 13, TFT_WHITE ); // индикатор батареи
   tft.fillCircle(240, 125, 20, TFT_YELLOW);
+
+  
+
+ 
 } 
 

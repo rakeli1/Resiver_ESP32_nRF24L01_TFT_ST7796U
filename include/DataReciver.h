@@ -2,14 +2,57 @@
 #include <RF24.h>
 
 
+struct RadioData
+{
+   float temperature;
+   float humidity;
+   float pressure;
+     int baterylevel;  
+};
+
+struct ForecastData
+{
+  float temp_morning;
+  float temp_day;
+  float temp_evening;
+  float temp_night;
+  int   rain_chance;
+  float precipitatios;
+  char desc[50];
+};
+
+struct TimeData
+{
+   int hour;
+   int minute;
+   int seconds;
+
+   int day;
+   int month;
+   int year;
+
+   int weekday;
+   unsigned long unixTime;
+};
+
+
 class DataReciver
 {
-  public:
-     DataReciver(RF24 *radio);
-     bool update();               // прием данных с радиомодуля
-     const float *getData()const;  // возврат указателя на массив значений полученых с радиомодуля
+  private:
+     RF24&        radiomodul;
+     float        dataSensor[4];
+     RadioData    radiodata;
+     ForecastData forecast;
+     TimeData     timedata;
+     
 
-   private:
-      RF24 *radio;
-      float dataSensor[4]; //массив в который сохраняем данные полученые с радиомодуля
+  public:
+     DataReciver(RF24& radio);
+     void updateRadio();
+     void updateForecast();
+     void updateTimeData();
+     
+     RadioData& getRadioData();
+     ForecastData& getForecastData(); 
+        TimeData&  getTimeData(); 
 };

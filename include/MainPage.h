@@ -38,7 +38,7 @@ class MainPage : public Page
            float temperature = 0;
            float humidity = 0;
            float pressure = 0;
-           int batteryLevel = 50;
+           int batteryLevel = 0;
            String currentData = "--";
            String currentTime = "-- : --";
            String dayOfWeek = " ----";
