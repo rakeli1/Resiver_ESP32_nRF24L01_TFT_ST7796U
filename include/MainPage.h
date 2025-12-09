@@ -1,57 +1,51 @@
 #pragma once
+#include <TFT_eSPI.h>
 #include "Page.h"
-#include "DataReciver.h"
-#include <stdint.h>
-#include <Arduino.h> 
+#include "struct_radioPaket.h"
+
 
 class MainPage : public Page
 {
- public:
-      MainPage(DataReciver *datareciver);
-      ~MainPage();
-       
-                //МЕТОДЫ СТРАНИЦЫ
-      void update() override;
-      void draw() override;
+ private:
+    TFT_eSPI&   tft;
+    radioPaket& sensorData;
 
-              // ПРИЕМ ДАННЫХ С РАДИОКАНАЛА - ВХОДНЫЕ ДАННЫЕ
-      float receiveTemperature(float t); //сохраняем данные температуры в переменную чтобы не потерять
-      float receiveHumidity(float h);    //сохраняем данные влажности в переменную
-      float receivePressure(float p);    //сохраняем данные в переменную
-        int receiveBatteryLevel(int BatLevel); //сохраняем данные в переменную
+    TFT_eSprite sprTemp;
+    TFT_eSprite sprHumidity;
+    TFT_eSprite sprPressure;
+    TFT_eSprite sprIcon;
+    TFT_eSprite sprBaterry;
+    TFT_eSprite sprTime;
+    TFT_eSprite sprWiFi;
+    TFT_eSprite sprData;
 
-              // ОБНОВЛЕНИЕ ВРЕМЕНИ
-       void receiveTime(uint8_t hour, uint8_t minute, uint8_t second);
-       void receiveData(uint8_t day, uint8_t month, uint16_t year);
+    int lastTemp;
+    int lastHumidity;
+    int lastPressure;
+    int lastIconID;
+    int lastBaterry;
+    int lastData;
+    int lastPecent;
+    String Time;
+    bool lastWiFi = false;
 
+    // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
+                         // тут будут все данные 
+    public:
+    MainPage(TFT_eSPI& display, radioPaket& paket);
+    void draw() override;
+    void update() override;
 
-      private:
-           
-           void drawMainValues();
-           void drawWeatherIcon();
-           void drawBateryIcon();
-           void drawButtons();
-           void drawDataTime();
-           void drawWindows();  // ЭТО НАБРОСОК РЕШАЮ ПОЗЖЕ ЛИБО РИСОВАТЬ ЛИБО БРАТЬ ГОТОВУЮ КАРТИНКУ
+    private:
+    void updateTemp();
+    void updateHumidity();
+    void updatePressure();
+    void updateIconWeather(int iconID);
+    void updateBaterry();
+    void updateTime(String t);
+    void updateWiFi(bool connect);
+    void updateData(String dateStr);
+    void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit);
+    void drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color, int repit);  
 
-           DataReciver *datareciver;
-           float temperature = 0;
-           float humidity = 0;
-           float pressure = 0;
-           int batteryLevel = 0;
-           String currentData = "--";
-           String currentTime = "-- : --";
-           String dayOfWeek = " ----";
-
-           uint8_t hour = 0;
-           uint8_t minute = 0;
-           uint8_t second = 0;
-
-           uint8_t day = 00;
-           uint8_t month = 00;
-           uint16_t year = 00;
-
-           unsigned long needRedraw; // чтобы не рисовать дисплей 50 раз в секунду
-           const unsigned long redrawInterval = 500; // 500мс
-          
 };
