@@ -1,5 +1,6 @@
 #include "RadioData.h"
 #include <TFT_eSPI.h>
+#include "RF24.h"
 
 RadioData::RadioData(RF24& radiomodul) :
 radio(radiomodul) {}
@@ -11,8 +12,10 @@ radio(radiomodul) {}
 }
 
 void RadioData::upDate()
-{
-    
+{ if(radio.available())
+  {
+  radio.read(&rx_data, sizeof(rx_data)); 
+  }
   radiopaket.ID = rx_data[ID];
   radiopaket.temperature = rx_data[TEMPERATURE];
   radiopaket.humidity = rx_data[HUMIDITY];

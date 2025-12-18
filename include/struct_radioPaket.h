@@ -3,9 +3,9 @@
 struct radioPaket
 { 
   int ID;
-  float temperature;
-  float humidity;
-  float pressure;
+  int temperature;
+  int humidity;
+  int pressure;
   float percent;
   float adcfl;
   float vA0;

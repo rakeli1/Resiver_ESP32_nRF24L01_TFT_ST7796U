@@ -38,22 +38,27 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   drawHLine(0, 70, 480, TFT_WHITE, 2);
   drawHLine(0, 145, 160, TFT_WHITE, 2);
   
-  tft.fillRect(0, 0, 20, 20, TFT_DARKGREEN);  // ориентир setRotation()
+  tft.fillRect(0, 0, 20, 20, TFT_BLUE);  // ориентир setRotation()
   tft.drawRect(170, 5, 40, 13, TFT_WHITE ); // индикатор батареи
   tft.fillCircle(240, 125, 20, TFT_YELLOW);
 
-  sprTemp.createSprite(80, 40);
-  sprHumidity.createSprite(80, 40);
-  sprPressure.createSprite(80, 40);
+  sprTemp.createSprite(100, 50);
+  sprHumidity.createSprite(100, 50);
+  sprPressure.createSprite(100, 50);
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день
   sprBaterry.createSprite(38, 11); // индикатор батареи в своих размерах
   sprTime.createSprite(150, 40);
   sprWiFi.createSprite(40, 20);
   sprData.createSprite(150, 40);
 
-  sprTemp.pushSprite(160, 240);
-  sprHumidity.pushSprite(320, 240);
-  sprPressure.pushSprite(10, 240);
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_BLACK);
+  tft.setTextFont(4);
+  tft.drawString("Temperature", 240, 240);
+  tft.drawString("Humidity", 400, 240);
+  tft.drawString("Pressure", 80, 240);
+
+  
   sprIcon.pushSprite(200, 100);   // спрайт иконки погоды на текущий день
   sprBaterry.pushSprite(171, 6); // индикатор батареи на своем месте
   sprTime.pushSprite(326, 180);
@@ -67,8 +72,9 @@ void MainPage::updateTemp()
   {
     sprTemp.fillSprite(TFT_DARKGREY);
     sprTemp.setTextColor(TFT_BLACK);
-    sprTemp.drawString(String(sensorData.temperature), 0, 0, 7);
-    sprTemp.pushSprite(10, 10);
+    sprTemp.setTextDatum(TC_DATUM);
+    sprTemp.drawString(String(sensorData.temperature), 50, 0, 7);
+    sprTemp.pushSprite(190, 260);
     lastTemp = sensorData.temperature;
   }
 }
@@ -79,8 +85,9 @@ void MainPage::updateHumidity()
   {
     sprHumidity.fillSprite(TFT_DARKGREY);
     sprHumidity.setTextColor(TFT_BLACK);
-    sprHumidity.drawString(String(sensorData.humidity), 0, 0, 7);
-    sprHumidity.pushSprite(10, 60);
+    sprHumidity.setTextDatum(TC_DATUM);
+    sprHumidity.drawString(String(sensorData.humidity), 50, 0, 7);
+    sprHumidity.pushSprite(350, 260);
     lastHumidity = sensorData.humidity;
   }
 }
@@ -91,8 +98,9 @@ void MainPage::updatePressure()
     {
         sprPressure.fillSprite(TFT_DARKGREY);
         sprPressure.setTextColor(TFT_BLACK);
-        sprPressure.drawString(String(sensorData.pressure), 0, 0, 7);
-        sprPressure.pushSprite(10, 110);
+        sprPressure.setTextDatum(TC_DATUM);
+        sprPressure.drawString(String(sensorData.pressure), 50, 0, 7);
+        sprPressure.pushSprite(30, 260);
         lastPressure = sensorData.pressure;
     }
 }
@@ -101,7 +109,7 @@ void MainPage::updateIconWeather(int iconID)
 {
     if(iconID != lastIconID)
     {
-        sprIcon.fillSprite(TFT_DARKGREY);
+        sprIcon.fillSprite(TFT_BLUE);
         //sprIcon.pushImage.... тут моя иконка погоды
         sprIcon.pushSprite(200, 10);
         lastIconID = iconID;
@@ -112,7 +120,7 @@ void MainPage::updateBaterry()
 {
     if(sensorData.percent != lastPecent)
     {
-        sprBaterry.fillSprite(TFT_DARKGREY);
+        sprBaterry.fillSprite(TFT_BLUE);
         sprBaterry.setTextColor(TFT_BLACK);
         sprBaterry.drawString(String(sensorData.percent), 0, 0, 2);
         sprBaterry.pushSprite(10, 200);
@@ -122,7 +130,7 @@ void MainPage::updateBaterry()
 
 void MainPage::updateTime(String t)
 {
-    sprTime.fillSprite(TFT_DARKGREY);
+    sprTime.fillSprite(TFT_BLUE);
     sprTime.drawString(t, 0, 0, 4);
     sprTime.pushSprite(10, 200);
 }
@@ -131,7 +139,7 @@ void MainPage::updateWiFi(bool connected)
 {
     if(connected != lastWiFi)
     {
-        sprWiFi.fillSprite(TFT_DARKGREY);
+        sprWiFi.fillSprite(TFT_BLUE);
         sprWiFi.drawString(connected ? "WiFi" : "NoWiFi", 0, 0, 2);
         sprWiFi.pushSprite(200, 200);
         lastWiFi = connected;

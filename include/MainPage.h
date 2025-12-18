@@ -19,11 +19,11 @@ class MainPage : public Page
     TFT_eSprite sprWiFi;
     TFT_eSprite sprData;
 
-    int lastTemp;
-    int lastHumidity;
-    int lastPressure;
-    int lastIconID;
-    int lastBaterry;
+    int lastTemp = 0;
+    int lastHumidity = 0;
+    int lastPressure = 0;
+    int lastIconID = 0;
+    int lastBaterry = 0;
     int lastData;
     int lastPecent;
     String Time;
