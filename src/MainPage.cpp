@@ -42,23 +42,32 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   tft.drawRect(170, 5, 40, 13, TFT_WHITE ); // индикатор батареи
   tft.fillCircle(240, 125, 20, TFT_YELLOW);
 
-  sprTemp.createSprite(100, 50);
-  sprHumidity.createSprite(100, 50);
-  sprPressure.createSprite(100, 50);
+  
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день
   sprBaterry.createSprite(38, 11); // индикатор батареи в своих размерах
   sprTime.createSprite(150, 40);
   sprWiFi.createSprite(40, 20);
   sprData.createSprite(150, 40);
 
-  tft.setTextDatum(MC_DATUM);
+  tft.setTextDatum(MC_DATUM); // центр по оси Х И по оси Y
   tft.setTextColor(TFT_BLACK);
   tft.setTextFont(4);
   tft.drawString("Temperature", 240, 240);
   tft.drawString("Humidity", 400, 240);
   tft.drawString("Pressure", 80, 240);
 
-  
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_BLACK);
+  tft.setTextFont(4);
+  tft.drawString("SETTINGS", 80, 114);
+  tft.drawString("CURRENCY", 80, 185);
+  tft.drawString("FORECAST", 80, 40);
+
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_BLACK);
+  tft.setTextFont(4);
+  tft.drawString("Wi-Fi", 360, 17);
+
   sprIcon.pushSprite(200, 100);   // спрайт иконки погоды на текущий день
   sprBaterry.pushSprite(171, 6); // индикатор батареи на своем месте
   sprTime.pushSprite(326, 180);
@@ -70,6 +79,7 @@ void MainPage::updateTemp()
 {
   if(sensorData.temperature != lastTemp)
   {
+    sprTemp.createSprite(100, 50);
     sprTemp.fillSprite(TFT_DARKGREY);
     sprTemp.setTextColor(TFT_BLACK);
     sprTemp.setTextDatum(TC_DATUM);
@@ -83,6 +93,7 @@ void MainPage::updateHumidity()
 {
   if(sensorData.humidity!= lastHumidity)
   {
+    sprHumidity.createSprite(100, 50);
     sprHumidity.fillSprite(TFT_DARKGREY);
     sprHumidity.setTextColor(TFT_BLACK);
     sprHumidity.setTextDatum(TC_DATUM);
@@ -96,6 +107,7 @@ void MainPage::updatePressure()
 {
     if(sensorData.pressure != lastPressure)
     {
+        sprPressure.createSprite(100, 50);
         sprPressure.fillSprite(TFT_DARKGREY);
         sprPressure.setTextColor(TFT_BLACK);
         sprPressure.setTextDatum(TC_DATUM);
