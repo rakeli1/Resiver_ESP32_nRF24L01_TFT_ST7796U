@@ -33,8 +33,8 @@ class MainPage : public Page
                          // тут будут все данные 
     public:
     MainPage(TFT_eSPI& display, radioPaket& paket);
-    void draw() override;
-    void update() override;
+    void drawStatic() override;
+    void updateDinamic() override;
 
     private:
     void updateTemp();

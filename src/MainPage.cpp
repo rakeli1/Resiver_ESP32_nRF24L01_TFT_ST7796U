@@ -27,7 +27,7 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
 }
 
  
- void MainPage::draw() 
+ void MainPage::drawStatic() 
  {
   tft.fillScreen(TFT_DARKGREY);
 
@@ -158,7 +158,7 @@ void MainPage::updateWiFi(bool connected)
     }
 }
 
- void MainPage::update()
+ void MainPage::updateDinamic()
 {
      //Сюда добавить функции обновления обновляемых параметров  
      // ссылку на структуру которых будет хранить член класса MainPage

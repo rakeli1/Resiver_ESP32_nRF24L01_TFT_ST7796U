@@ -3,6 +3,7 @@
 #include <TFT_eSPI.h>
 #include "MainPage.h"
 #include "RadioData.h"
+#include "ForecastPage.h"
 #define CE_PIN  26
 #define CSN_PIN 27
 
@@ -12,6 +13,7 @@ TFT_eSPI tft = TFT_eSPI();
 RadioData radiodata (radio);
 radioPaket paket; // структура в которую заходят данные с радиомодуля
 MainPage mainPage(tft, paket);
+ForecastPage foreCast(tft);
 
 
 
@@ -23,7 +25,8 @@ void setup()
   tft.init();
   tft.setRotation(3); // левый верхний угол - 0 координат(x- вправо , y - вниз). контакты дисплея слева 
   tft.fillScreen(TFT_DARKGREY);
-  mainPage.draw();
+ // mainPage.drawStatic();
+  foreCast.drawStatic();
   radio.begin();
   radio.setAutoAck(1);
   radio.setRetries(0,15);
@@ -42,13 +45,12 @@ void setup()
 void loop() 
 {   
     
-    radiodata.upDate();
-    paket = radiodata.getData();
-    mainPage.update();
-    //float temperature = paket.temperature;
-    //Serial.println(temperature);
-    //delay(1000);
+    //radiodata.upDate();
+    //paket = radiodata.getData();
+    //mainPage.updateDinamic();
+    
+    
 
-    //Serial.println("HELLO");
+    
 } 
 
