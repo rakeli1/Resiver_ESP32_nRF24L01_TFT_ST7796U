@@ -2,13 +2,15 @@
 #include <TFT_eSPI.h>
 #include "Page.h"
 #include "struct_radioPaket.h"
+#include "RadioData.h"
 
 
 class MainPage : public Page
 {
  private:
     TFT_eSPI&   tft;
-    radioPaket& sensorData;
+    struc_radioPaket& sensorData;// структура данных в которую ложит данные класс RadioData
+    RadioData& radiodata;
 
     TFT_eSprite sprTemp;
     TFT_eSprite sprHumidity;
@@ -32,7 +34,7 @@ class MainPage : public Page
     // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
                          // тут будут все данные 
     public:
-    MainPage(TFT_eSPI& display, radioPaket& paket);
+    MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata);
     void drawStatic() override;
     void updateDinamic() override;
 

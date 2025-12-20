@@ -12,7 +12,7 @@ byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"};
 TFT_eSPI tft = TFT_eSPI(); 
 RadioData radiodata (radio);
 radioPaket paket; // структура в которую заходят данные с радиомодуля
-MainPage mainPage(tft, paket);
+MainPage mainPage(tft, paket, radiodata);
 ForecastPage foreCast(tft);
 
 
@@ -25,8 +25,8 @@ void setup()
   tft.init();
   tft.setRotation(3); // левый верхний угол - 0 координат(x- вправо , y - вниз). контакты дисплея слева 
   tft.fillScreen(TFT_DARKGREY);
- // mainPage.drawStatic();
-  foreCast.drawStatic();
+  mainPage.drawStatic();
+  //foreCast.drawStatic();
   radio.begin();
   radio.setAutoAck(1);
   radio.setRetries(0,15);
@@ -45,9 +45,8 @@ void setup()
 void loop() 
 {   
     
-    //radiodata.upDate();
-    //paket = radiodata.getData();
-    //mainPage.updateDinamic();
+    
+    mainPage.updateDinamic();
     
     
 

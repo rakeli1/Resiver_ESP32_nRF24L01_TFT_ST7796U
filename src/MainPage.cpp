@@ -1,11 +1,12 @@
 
 #include "MainPage.h"
 #include <TFT_eSPI.h>
+#include "RadioData.h"
 
-MainPage::MainPage(TFT_eSPI& display, radioPaket& paket) : 
+MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
- sprWiFi(&display), sprData(&display), sensorData(paket)
+ sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata)
  {
 
  }
@@ -163,6 +164,8 @@ void MainPage::updateWiFi(bool connected)
      //Сюда добавить функции обновления обновляемых параметров  
      // ссылку на структуру которых будет хранить член класса MainPage
      // обьявления функций смотреть в хедере этого класса
+     radiodata.upDate();
+     sensorData = radiodata.getData();
      updatePressure();
      updateHumidity();
      updateTemp();

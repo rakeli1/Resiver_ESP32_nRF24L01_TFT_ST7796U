@@ -19,14 +19,28 @@ void ForecastPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t co
 
 void ForecastPage::drawStatic()
 {
-  drawHLine(0, 40, 480, TFT_WHITE, 3);
-  drawHLine(0, 109, 480, TFT_WHITE, 3);
-  drawHLine(0, 179, 480, TFT_WHITE, 3);
-  drawHLine(0, 249, 480, TFT_WHITE, 3);
+  tft.fillRect(0, 0, 239, 39, TFT_RED);
 
-  drawVLine(119, 0, 320, TFT_WHITE, 3);
+  drawHLine(0, 39, 480, TFT_WHITE, 3);
+  drawHLine(0, 79, 480, TFT_WHITE, 3); 
+  drawHLine(0, 139, 480, TFT_WHITE, 3);
+  drawHLine(0, 199, 480, TFT_WHITE, 3);
+  drawHLine(0, 259, 480, TFT_WHITE, 3);
+
+ 
+  tft.setTextDatum(MC_DATUM);
+  tft.setTextColor(TFT_BLACK);
+  tft.drawString("EXIT", 120, 20, 4);
+  tft.drawString("Data", 60, 60, 4);
+  tft.drawString("Night", 60, 110, 4);
+  tft.drawString("Morning", 60, 170, 4);
+  tft.drawString("Day", 60, 230, 4);
+  tft.drawString("Evening", 60, 290, 4);
+  
+
+  drawVLine(119, 40, 280, TFT_WHITE, 3);
   drawVLine(239, 0, 320, TFT_WHITE, 3);
-  drawVLine(359, 0, 320, TFT_WHITE, 3);
+  drawVLine(359, 40, 280, TFT_WHITE, 3);
 }
 
 void ForecastPage::updateDinamic()

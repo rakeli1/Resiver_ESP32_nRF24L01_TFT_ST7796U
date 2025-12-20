@@ -1,6 +1,6 @@
 # pragma once
 
-struct radioPaket
+struct struc_radioPaket
 { 
   int ID;
   int temperature;
