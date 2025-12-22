@@ -1,23 +1,22 @@
 #include "Button.h"
 
-Button::Button(TFT_eSPI& tft_, int x_, int y_, int w_, int h_) : tft(tft_),  x(x_), y(y_), w(w_), h(h_), sprite(&tft)
+
+
+Button::Button(int x_, int y_, int w_, int h_, FT6336U& _touch) : x(x_), y(y_), w(w_), h(h_),touch(_touch)
 {
-    sprite.createSprite(w, h);
-    sprite.fillSprite(TFT_RED); 
+
 }
 
-void Button::setState()
-{
-    stateBut = (!stateBut);
+
+
+bool Button::isTouched(int touchX, int touchY)
+{  
+   if(touch.read_touch1_event() == 2)
+   {
+    return(touchX >= x && touchX <= x + w && touchY >= y && touchY <= y + h);
+   }else
+   {
+     return false;
+   }
 }
 
-bool Button::isTouched(int tx, int ty)
-{
-    return(tx >= x && tx <= x + w && ty >= y && ty <= y +h);
-}
-
-void Button::drawBtn()
-{
-    sprite.fillSprite(stateBut ? TFT_RED : TFT_BLUE);
-    sprite.pushSprite(x, y);
-}

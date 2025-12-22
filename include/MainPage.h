@@ -3,6 +3,8 @@
 #include "Page.h"
 #include "struct_radioPaket.h"
 #include "RadioData.h"
+#include "Button.h"
+#include "FT6336U.h"
 
 
 class MainPage : public Page
@@ -11,6 +13,9 @@ class MainPage : public Page
     TFT_eSPI&   tft;
     struc_radioPaket& sensorData;// структура данных в которую ложит данные класс RadioData
     RadioData& radiodata;
+    Button forecast;
+   // Button currency;
+    //Button settings;
 
     TFT_eSprite sprTemp;
     TFT_eSprite sprHumidity;
@@ -28,6 +33,8 @@ class MainPage : public Page
     int lastBaterry = 0;
     int lastData;
     int lastPecent;
+    int touchX = -1; // координаты нажатия тачскрина X
+    int touchY = -1; // координаты нажатия тачскрина Y
     String Time;
     bool lastWiFi = false;
 
@@ -37,6 +44,7 @@ class MainPage : public Page
     MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata);
     void drawStatic() override;
     void updateDinamic() override;
+    void setTouch(int touchx, int touchy);
 
     private:
     void updateTemp();

@@ -3,10 +3,13 @@
 #include <TFT_eSPI.h>
 #include "RadioData.h"
 
+extern FT6336U gl_touch;
+
 MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
- sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata)
+ sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata),
+  forecast(0, 0, 160, 70, gl_touch)
  {
 
  }
@@ -33,7 +36,6 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   tft.fillScreen(TFT_DARKGREY);
 
   drawVline(160, 0, 320, TFT_WHITE, 2);
-  drawVline(320, 220, 100, TFT_WHITE, 2);
   drawVline(320, 71, 250, TFT_WHITE, 2);
   drawHLine(0, 220, 480, TFT_WHITE, 2);
   drawHLine(0, 70, 480, TFT_WHITE, 2);
@@ -159,11 +161,23 @@ void MainPage::updateWiFi(bool connected)
     }
 }
 
+void MainPage::setTouch(int touchx, int touchy)
+{
+  this -> touchX = touchx;
+  this -> touchY = touchy;
+}
+
  void MainPage::updateDinamic()
 {
-     //Сюда добавить функции обновления обновляемых параметров  
-     // ссылку на структуру которых будет хранить член класса MainPage
-     // обьявления функций смотреть в хедере этого класса
+      if(forecast.isTouched(touchX, touchY))
+      {
+        
+      }
+      
+
+      
+     // if(currencyButton.pressed())
+     // if(settingButton.pressed())
      radiodata.upDate();
      sensorData = radiodata.getData();
      updatePressure();

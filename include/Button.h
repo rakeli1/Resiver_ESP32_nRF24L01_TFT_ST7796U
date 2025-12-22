@@ -1,19 +1,21 @@
 #pragma once
-#include <SPI.h>
-#include <TFT_eSPI.h>
+#include <stdint.h>
+#include "FT6336U.h"
+
 
 class Button
 {
    private:
-      int x, y, w, h;
-      bool stateBut = false;
-      TFT_eSPI& tft;
-      TFT_eSprite sprite;
+      int x; 
+      int y; 
+      int w; 
+      int h;
+      FT6336U& touch;
+      
+      
 
    public:
-      Button(TFT_eSPI &tft, int x, int y, int w, int h);
-
-      void setState();
-      bool isTouched(int tx, int ty);
-      void drawBtn();
+      Button(int x, int y, int w, int h, FT6336U& _touch);
+      bool isTouched(int touchX, int touchY);
+      
 };

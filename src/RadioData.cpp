@@ -6,7 +6,7 @@ RadioData::RadioData(RF24& radiomodul) :
 radio(radiomodul) {}
 
 
- const radioPaket& RadioData::getData()
+ const struc_radioPaket& RadioData::getData()
 {
     return radiopaket;
 }

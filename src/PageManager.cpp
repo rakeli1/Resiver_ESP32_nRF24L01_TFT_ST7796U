@@ -1,5 +1,6 @@
 #include "PageManager.h"
 
+
 void PageManager::setPage(Page* newPage)
 {
     if(newPage == nullptr) return;

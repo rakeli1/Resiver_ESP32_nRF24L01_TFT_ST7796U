@@ -4,14 +4,32 @@
 #include "MainPage.h"
 #include "RadioData.h"
 #include "ForecastPage.h"
+#include "FT6336U.h"
 #define CE_PIN  26
 #define CSN_PIN 27
 
+
 RF24 radio(CE_PIN,CSN_PIN);
 byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"}; 
-TFT_eSPI tft = TFT_eSPI(); 
+
+TFT_eSPI tft = TFT_eSPI();
+
+FT6336U gl_touch(5, 34);
+void getTouchXY(int& x, int& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
+{
+  
+   int x_lib = gl_touch.read_touch1_x();
+   int y_lib = gl_touch.read_touch1_y();
+
+   x = (480 - y_lib);
+   y = x_lib;
+}
+
+int touchX = -1;
+int touchY = -1;
+
 RadioData radiodata (radio);
-radioPaket paket; // структура в которую заходят данные с радиомодуля
+struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
 MainPage mainPage(tft, paket, radiodata);
 ForecastPage foreCast(tft);
 
@@ -44,8 +62,8 @@ void setup()
 
 void loop() 
 {   
-    
-    
+    getTouchXY( touchX, touchY);
+    mainPage.setTouch(touchX, touchY);
     mainPage.updateDinamic();
     
     
