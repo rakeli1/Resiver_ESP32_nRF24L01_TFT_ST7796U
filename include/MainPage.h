@@ -5,6 +5,7 @@
 #include "RadioData.h"
 #include "Button.h"
 #include "FT6336U.h"
+#include "PageManager.h"
 
 
 class MainPage : public Page

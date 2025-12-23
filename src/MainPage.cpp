@@ -3,6 +3,8 @@
 #include <TFT_eSPI.h>
 #include "RadioData.h"
 
+extern ForecastPage foreCast;
+extern PageManager pagemanager;
 extern FT6336U gl_touch;
 
 MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata) : 
@@ -168,15 +170,10 @@ void MainPage::setTouch(int touchx, int touchy)
 }
 
  void MainPage::updateDinamic()
-{
-      if(forecast.isTouched(touchX, touchY))
-      {
-        
-      }
-      
-
-      
-     // if(currencyButton.pressed())
+{    
+    
+     // if(forecast.isTouched(touchX, touchY))
+      // if(currencyButton.pressed())
      // if(settingButton.pressed())
      radiodata.upDate();
      sensorData = radiodata.getData();

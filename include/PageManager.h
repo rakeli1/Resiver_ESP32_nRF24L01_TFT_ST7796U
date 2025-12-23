@@ -1,8 +1,9 @@
 #pragma once
 #include "Page.h"
+#include "ForecastPage.h"
 
 class MainPage;
-class ForecastPage;
+//class ForecastPage;
 
 class PageManager
 {
@@ -15,9 +16,10 @@ class PageManager
     // SettingsPage* settingspage;
     // CurrencyPage currencypage;
 
-    PageManager() = default;
+    
 
   public:
+    PageManager() = default;
     void setPage(Page* newPage);
     void update();
     Page* getCurrentPage() const;    
