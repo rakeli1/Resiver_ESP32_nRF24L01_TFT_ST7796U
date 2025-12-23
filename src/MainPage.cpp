@@ -4,13 +4,15 @@
 #include "RadioData.h"
 
 extern ForecastPage foreCast;
-extern PageManager pagemanager;
+extern PageManager manager;
 extern FT6336U gl_touch;
 
-MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata) : 
+extern void getTouchXY(int& x, int& y);
+
+MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
- sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata),
+ sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
   forecast(0, 0, 160, 70, gl_touch)
  {
 
@@ -163,16 +165,19 @@ void MainPage::updateWiFi(bool connected)
     }
 }
 
-void MainPage::setTouch(int touchx, int touchy)
-{
-  this -> touchX = touchx;
-  this -> touchY = touchy;
-}
+
 
  void MainPage::updateDinamic()
 {    
     
-     // if(forecast.isTouched(touchX, touchY))
+      if(forecast.isTouched())
+      {
+         Serial.println(" FORECAST IS TOUCHED ");
+         Serial.print("X = ");
+         Serial.println(forecast.touchx);
+         Serial.print("Y = ");
+         Serial.println(forecast.touchy);
+      }
       // if(currencyButton.pressed())
      // if(settingButton.pressed())
      radiodata.upDate();

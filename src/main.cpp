@@ -21,23 +21,24 @@ FT6336U gl_touch(5, 34);
 int touchX = -1;
 int touchY = -1;
 
-void getTouchXY(int& x, int& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
-{
+//void getTouchXY(int& x, int& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
+//{
   
-   int x_lib = gl_touch.read_touch1_x();
-   int y_lib = gl_touch.read_touch1_y();
+  // int x_lib = gl_touch.read_touch1_x();
+  // int y_lib = gl_touch.read_touch1_y();
 
-   x = (480 - y_lib);
-   y = x_lib;
-}
+   //x = (480 - y_lib);
+  // y = x_lib;
+//}
 
 
 
 RadioData radiodata (radio);
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
-MainPage mainPage(tft, paket, radiodata);
+PageManager manager;
+MainPage mainPage(tft, paket, radiodata, manager);
 ForecastPage foreCast(tft);
-PageManager pagemanager;
+
 
 
 
@@ -70,14 +71,7 @@ void setup()
 void loop() 
 {   
     //getTouchXY( touchX, touchY);
-    if(gl_touch.read_touch1_event() == 2)
-    {
-      getTouchXY(touchX, touchY);
-      Serial.print(" X = ");
-      Serial.println(touchX);
-      Serial.print(" Y = ");
-      Serial.println(touchY);
-    }
+    
     //pagemanager.update();
     //mainPage.setTouch(touchX, touchY);
     mainPage.updateDinamic();

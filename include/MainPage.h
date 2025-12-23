@@ -14,6 +14,7 @@ class MainPage : public Page
     TFT_eSPI&   tft;
     struc_radioPaket& sensorData;// структура данных в которую ложит данные класс RadioData
     RadioData& radiodata;
+    PageManager& manager;
     Button forecast;
    // Button currency;
     //Button settings;
@@ -34,18 +35,16 @@ class MainPage : public Page
     int lastBaterry = 0;
     int lastData;
     int lastPecent;
-    int touchX = -1; // координаты нажатия тачскрина X
-    int touchY = -1; // координаты нажатия тачскрина Y
-    String Time;
+     String Time;
     bool lastWiFi = false;
 
     // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
                          // тут будут все данные 
     public:
-    MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata);
+    MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager);
     void drawStatic() override;
     void updateDinamic() override;
-    void setTouch(int touchx, int touchy);
+    
 
     private:
     void updateTemp();
