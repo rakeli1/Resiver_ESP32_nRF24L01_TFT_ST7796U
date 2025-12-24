@@ -20,9 +20,10 @@ void Button::getTouchXY()
 
 bool Button::isTouched()
 {  
-   getTouchXY();
+   
    if(touch.read_touch1_event() == 2)
-   {
+   { 
+     getTouchXY();
      return (touchx >= btnx && touchx <= btnx + btnw && touchy >= btny && touchy <= btny + btnh);
    }else
    {

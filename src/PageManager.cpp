@@ -1,6 +1,6 @@
 #include "PageManager.h"
 
-
+class ForecastPage;
 void PageManager::setPage(Page* newPage)
 {
     if(newPage == nullptr) return;

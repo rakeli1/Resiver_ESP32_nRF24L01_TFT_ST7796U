@@ -6,7 +6,9 @@
 #include "Button.h"
 #include "FT6336U.h"
 #include "PageManager.h"
+#include "ForecastPage.h"
 
+//extern ForecastPage forecastpage;
 
 class MainPage : public Page
 {
@@ -15,9 +17,9 @@ class MainPage : public Page
     struc_radioPaket& sensorData;// структура данных в которую ложит данные класс RadioData
     RadioData& radiodata;
     PageManager& manager;
-    Button forecast;
-   // Button currency;
-    //Button settings;
+    Button btn_forecast;
+   // Button btn_currency;
+    //Button btn_settings;
 
     TFT_eSprite sprTemp;
     TFT_eSprite sprHumidity;

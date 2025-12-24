@@ -2,8 +2,9 @@
 #include "Page.h"
 #include "ForecastPage.h"
 
+class ForecastPage;
 class MainPage;
-//class ForecastPage;
+extern MainPage mainpage;
 
 class PageManager
 {

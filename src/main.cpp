@@ -5,7 +5,7 @@
 #include "RadioData.h"
 #include "ForecastPage.h"
 #include "PageManager.h"
-#include<Wire.h>
+#include  <Wire.h>
 #include "FT6336U.h"
 #define CE_PIN  26
 #define CSN_PIN 27
@@ -36,8 +36,8 @@ int touchY = -1;
 RadioData radiodata (radio);
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
 PageManager manager;
-MainPage mainPage(tft, paket, radiodata, manager);
-ForecastPage foreCast(tft);
+MainPage mainpage(tft, paket, radiodata, manager);
+ForecastPage forecastpage(tft);
 
 
 
@@ -52,7 +52,7 @@ void setup()
   tft.init();
   tft.setRotation(3); // левый верхний угол - 0 координат(x- вправо , y - вниз). контакты дисплея слева 
   tft.fillScreen(TFT_DARKGREY);
-  mainPage.drawStatic();
+  //mainPage.drawStatic();
   //foreCast.drawStatic();
   
   radio.begin();
@@ -66,15 +66,17 @@ void setup()
   radio.setDataRate(RF24_250KBPS);
   radio.powerUp();
   radio.startListening();
+
+  manager.setPage(&mainpage);
 }
 
 void loop() 
 {   
     //getTouchXY( touchX, touchY);
     
-    //pagemanager.update();
+    manager.update();
     //mainPage.setTouch(touchX, touchY);
-    mainPage.updateDinamic();
+    //mainPage.updateDinamic();
     //Serial.println(paket.temperature);
     //delay(1000);
     

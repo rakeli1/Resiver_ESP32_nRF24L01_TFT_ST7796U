@@ -19,6 +19,7 @@ void ForecastPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t co
 
 void ForecastPage::drawStatic()
 {
+  tft.fillScreen(TFT_DARKGREY);
   tft.fillRect(0, 0, 239, 39, TFT_RED);
 
   drawHLine(0, 39, 480, TFT_WHITE, 3);

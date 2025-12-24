@@ -1,13 +1,17 @@
 #pragma once
 #include "Page.h"
+#include "PageManager.h"
 #include <stdint.h>
 #include <TFT_eSPI.h>
 #include "Button.h"
+
+class PageManager;
 
 class ForecastPage : public Page
 {
    private:
    TFT_eSPI& tft;
+   
 
    public:
    
