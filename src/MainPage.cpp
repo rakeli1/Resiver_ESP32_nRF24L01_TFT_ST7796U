@@ -179,7 +179,7 @@ void MainPage::updateWiFi(bool connected)
          //Serial.println(btn_forecast.touchx);
          //Serial.print("Y = ");
          //Serial.println(btn_forecast.touchy);
-      }
+       }
       // if(currencyButton.pressed())
      // if(settingButton.pressed())
      radiodata.upDate();

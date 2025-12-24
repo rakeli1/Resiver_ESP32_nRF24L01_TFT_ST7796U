@@ -1,5 +1,8 @@
 #include "ForecastPage.h"
+#include "MainPage.h"
 
+extern PageManager manager;
+extern MainPage mainpage;
 
 void ForecastPage::drawVLine(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit)
 {
@@ -46,5 +49,8 @@ void ForecastPage::drawStatic()
 
 void ForecastPage::updateDinamic()
 {
-    
+   if(btn_exit.isTouched())
+   {
+      manager.setPage(&mainpage);
+   } 
 }

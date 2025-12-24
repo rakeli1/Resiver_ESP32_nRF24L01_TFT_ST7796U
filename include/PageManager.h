@@ -12,8 +12,8 @@ class PageManager
     Page* currentPage = nullptr; // указатель на текущую страницу
     bool needRedrawstatic = false; // флаг перерисовки статики
 
-    MainPage* mainpage = nullptr;
-    ForecastPage* forecastpage = nullptr;
+    //MainPage* mainpage = nullptr;
+    //ForecastPage* forecastpage = nullptr;
     // SettingsPage* settingspage;
     // CurrencyPage currencypage;
 

@@ -18,8 +18,7 @@ TFT_eSPI tft = TFT_eSPI();
 
 FT6336U gl_touch(5, 34);
 
-int touchX = -1;
-int touchY = -1;
+
 
 //void getTouchXY(int& x, int& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
 //{
