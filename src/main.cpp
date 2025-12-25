@@ -5,6 +5,7 @@
 #include "RadioData.h"
 #include "ForecastPage.h"
 #include "PageManager.h"
+#include "SettingPage.h"
 #include  <Wire.h>
 #include "FT6336U.h"
 #define CE_PIN  26
@@ -37,6 +38,7 @@ struc_radioPaket paket; // структура в которую заходят �
 PageManager manager;
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft);
+SettingPage settingpage(tft);
 
 
 
@@ -67,17 +69,15 @@ void setup()
   radio.startListening();
 
   manager.setPage(&mainpage);
+  //settingpage.drawStatic();
 }
 
 void loop() 
 {   
-    //getTouchXY( touchX, touchY);
+    
     
     manager.update();
-    //mainPage.setTouch(touchX, touchY);
-    //mainPage.updateDinamic();
-    //Serial.println(paket.temperature);
-    //delay(1000);
+    
     
 
     

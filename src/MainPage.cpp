@@ -7,6 +7,7 @@
 extern FT6336U gl_touch;
 //class ForecastPage;
 extern ForecastPage forecastpage;
+extern SettingPage settingpage;
 
 extern void getTouchXY(int& x, int& y);
 
@@ -14,7 +15,7 @@ MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radio
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
  sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
-  btn_forecast(0, 0, 160, 70, gl_touch)
+  btn_forecast(0, 0, 160, 70, gl_touch), btn_settings(0, 70, 160, 70, gl_touch)
  {
 
  }
@@ -174,14 +175,13 @@ void MainPage::updateWiFi(bool connected)
       if(btn_forecast.isTouched())
       {  
          manager.setPage(&forecastpage);
-         //Serial.println(" FORECAST IS TOUCHED ");
-         //Serial.print("X = ");
-         //Serial.println(btn_forecast.touchx);
-         //Serial.print("Y = ");
-         //Serial.println(btn_forecast.touchy);
-       }
-      // if(currencyButton.pressed())
-     // if(settingButton.pressed())
+      }
+
+      if(btn_settings.isTouched())
+      {
+        manager.setPage(&settingpage);
+      }
+
      radiodata.upDate();
      sensorData = radiodata.getData();
      updatePressure();

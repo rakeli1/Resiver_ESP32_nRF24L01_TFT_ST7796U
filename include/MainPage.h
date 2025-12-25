@@ -7,6 +7,7 @@
 #include "FT6336U.h"
 #include "PageManager.h"
 #include "ForecastPage.h"
+#include "SettingPage.h"
 
 //extern ForecastPage forecastpage;
 
@@ -19,7 +20,7 @@ class MainPage : public Page
     PageManager& manager;
     Button btn_forecast;
    // Button btn_currency;
-    //Button btn_settings;
+    Button btn_settings;
 
     TFT_eSprite sprTemp;
     TFT_eSprite sprHumidity;
