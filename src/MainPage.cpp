@@ -3,11 +3,14 @@
 #include <TFT_eSPI.h>
 #include "RadioData.h"
 #include "ForecastPage.h"
+#include "SettingPage.h"
+#include "CurrencyPage.h"
 
 extern FT6336U gl_touch;
 //class ForecastPage;
 extern ForecastPage forecastpage;
 extern SettingPage settingpage;
+extern CurrencyPage currencypage;
 
 extern void getTouchXY(int& x, int& y);
 
@@ -15,7 +18,8 @@ MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radio
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
  sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
-  btn_forecast(0, 0, 160, 70, gl_touch), btn_settings(0, 70, 160, 70, gl_touch)
+  btn_forecast(0, 0, 160, 70, gl_touch), btn_settings(0, 70, 160, 70, gl_touch),
+   btn_currencypage(0, 140, 160, 70, gl_touch)
  {
 
  }
@@ -170,8 +174,17 @@ void MainPage::updateWiFi(bool connected)
 
 
  void MainPage::updateDinamic()
-{    
-    
+{  
+     radiodata.upDate();
+     sensorData = radiodata.getData();
+     updatePressure();
+     updateHumidity();
+     updateTemp();
+     
+     //updateBaterry();
+  
+    if(gl_touch.read_touch1_event())
+    {
       if(btn_forecast.isTouched())
       {  
          manager.setPage(&forecastpage);
@@ -182,12 +195,13 @@ void MainPage::updateWiFi(bool connected)
         manager.setPage(&settingpage);
       }
 
-     radiodata.upDate();
-     sensorData = radiodata.getData();
-     updatePressure();
-     updateHumidity();
-     updateTemp();
-     //updateBaterry();
+      if(btn_currencypage.isTouched())
+      {
+        manager.setPage(&currencypage);
+      }
+    }
+
+     
 }
 
  

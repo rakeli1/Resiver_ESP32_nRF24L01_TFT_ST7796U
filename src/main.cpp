@@ -6,6 +6,7 @@
 #include "ForecastPage.h"
 #include "PageManager.h"
 #include "SettingPage.h"
+#include "CurrencyPage.h"
 #include  <Wire.h>
 #include "FT6336U.h"
 #define CE_PIN  26
@@ -39,7 +40,7 @@ PageManager manager;
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft);
 SettingPage settingpage(tft);
-
+CurrencyPage currencypage(tft);
 
 
 

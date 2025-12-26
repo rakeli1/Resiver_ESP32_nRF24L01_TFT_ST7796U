@@ -1,6 +1,7 @@
 #pragma once
 #include "Page.h"
 #include "ForecastPage.h"
+#include "CurrencyPage.h"
 
 class ForecastPage;
 class MainPage;

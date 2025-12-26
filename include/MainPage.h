@@ -8,6 +8,7 @@
 #include "PageManager.h"
 #include "ForecastPage.h"
 #include "SettingPage.h"
+#include "CurrencyPage.h"
 
 //extern ForecastPage forecastpage;
 
@@ -21,6 +22,7 @@ class MainPage : public Page
     Button btn_forecast;
    // Button btn_currency;
     Button btn_settings;
+    Button btn_currencypage;
 
     TFT_eSprite sprTemp;
     TFT_eSprite sprHumidity;
