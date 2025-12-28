@@ -5,12 +5,16 @@
 #include "ForecastPage.h"
 #include "SettingPage.h"
 #include "CurrencyPage.h"
+#include "struct_TouchState.h"
 
 extern FT6336U gl_touch;
 //class ForecastPage;
 extern ForecastPage forecastpage;
 extern SettingPage settingpage;
 extern CurrencyPage currencypage;
+extern uint16_t tX;
+extern uint16_t tY;
+extern TouchState structtouch;
 
 extern void getTouchXY(int& x, int& y);
 
@@ -18,8 +22,8 @@ MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radio
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
  sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
-  btn_forecast(0, 0, 160, 70, gl_touch), btn_settings(0, 70, 160, 70, gl_touch),
-   btn_currencypage(0, 140, 160, 70, gl_touch)
+  btn_forecast(0, 0, 160, 70), btn_settings(0, 70, 160, 70),
+   btn_currencypage(0, 140, 160, 70)
  {
 
  }
@@ -86,31 +90,56 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   sprTime.pushSprite(326, 180);
   sprWiFi.pushSprite(400, 6);
   sprData.pushSprite(166, 180);
+
+    //sprTemp.createSprite(100, 50);
+    //sprTemp.fillSprite(TFT_DARKGREY);
+    //sprTemp.setTextColor(TFT_BLACK);
+    //sprTemp.setTextDatum(TC_DATUM);
+    //sprTemp.drawString(String(lastTemp), 50, 0, 7);
+   // sprTemp.pushSprite(190, 260);
+  
+
+    //sprHumidity.createSprite(100, 50);
+    //sprHumidity.fillSprite(TFT_DARKGREY);
+    //sprHumidity.setTextColor(TFT_BLACK);
+    //sprHumidity.setTextDatum(TC_DATUM);
+    //sprHumidity.drawString(String(lastHumidity), 50, 0, 7);
+    //sprHumidity.pushSprite(350, 260);
+    
+
+        //sprPressure.createSprite(100, 50);
+        //sprPressure.fillSprite(TFT_DARKGREY);
+        //sprPressure.setTextColor(TFT_BLACK);
+       // sprPressure.setTextDatum(TC_DATUM);
+       // sprPressure.drawString(String(lastPressure), 50, 0, 7);
+       // sprPressure.pushSprite(30, 260);
+      
 }
 
 void MainPage::updateTemp()
 {
-  if(sensorData.temperature != lastTemp)
+  if(true)//sensorData.temperature != lastTemp
   {
     sprTemp.createSprite(100, 50);
     sprTemp.fillSprite(TFT_DARKGREY);
     sprTemp.setTextColor(TFT_BLACK);
     sprTemp.setTextDatum(TC_DATUM);
-    sprTemp.drawString(String(sensorData.temperature), 50, 0, 7);
+    sprTemp.drawString(String(lastTemp), 50, 0, 7);
     sprTemp.pushSprite(190, 260);
     lastTemp = sensorData.temperature;
+    //Serial.println("UpdateSpriteTemperature");
   }
 }
 
 void MainPage::updateHumidity()
 {
-  if(sensorData.humidity!= lastHumidity)
+  if(true)//sensorData.humidity!= lastHumidity
   {
     sprHumidity.createSprite(100, 50);
     sprHumidity.fillSprite(TFT_DARKGREY);
     sprHumidity.setTextColor(TFT_BLACK);
     sprHumidity.setTextDatum(TC_DATUM);
-    sprHumidity.drawString(String(sensorData.humidity), 50, 0, 7);
+    sprHumidity.drawString(String(lastHumidity), 50, 0, 7);
     sprHumidity.pushSprite(350, 260);
     lastHumidity = sensorData.humidity;
   }
@@ -118,13 +147,13 @@ void MainPage::updateHumidity()
 
 void MainPage::updatePressure()
 {
-    if(sensorData.pressure != lastPressure)
+    if(true)//sensorData.pressure != lastPressure
     {
         sprPressure.createSprite(100, 50);
         sprPressure.fillSprite(TFT_DARKGREY);
         sprPressure.setTextColor(TFT_BLACK);
         sprPressure.setTextDatum(TC_DATUM);
-        sprPressure.drawString(String(sensorData.pressure), 50, 0, 7);
+        sprPressure.drawString(String(lastPressure), 50, 0, 7);
         sprPressure.pushSprite(30, 260);
         lastPressure = sensorData.pressure;
     }
@@ -176,14 +205,15 @@ void MainPage::updateWiFi(bool connected)
  void MainPage::updateDinamic()
 {  
      radiodata.upDate();
-     sensorData = radiodata.getData();
+     //sensorData = radiodata.getData();
      updatePressure();
      updateHumidity();
      updateTemp();
      
      //updateBaterry();
   
-    if(gl_touch.read_touch1_event())
+    
+     if(structtouch.pressed)
     {
       if(btn_forecast.isTouched())
       {  
@@ -199,9 +229,9 @@ void MainPage::updateWiFi(bool connected)
       {
         manager.setPage(&currencypage);
       }
+      //Serial.println("Enter MainPage upDate Dinamicccccccccccccccc");
     }
-
-     
+      structtouch.pressed = false; 
 }
 
  

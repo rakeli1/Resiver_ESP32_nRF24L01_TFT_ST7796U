@@ -10,7 +10,6 @@
 #include "SettingPage.h"
 #include "CurrencyPage.h"
 
-//extern ForecastPage forecastpage;
 
 class MainPage : public Page
 {
@@ -20,7 +19,6 @@ class MainPage : public Page
     RadioData& radiodata;
     PageManager& manager;
     Button btn_forecast;
-   // Button btn_currency;
     Button btn_settings;
     Button btn_currencypage;
 
@@ -32,7 +30,8 @@ class MainPage : public Page
     TFT_eSprite sprTime;
     TFT_eSprite sprWiFi;
     TFT_eSprite sprData;
-
+    
+    public:
     int lastTemp = 0;
     int lastHumidity = 0;
     int lastPressure = 0;

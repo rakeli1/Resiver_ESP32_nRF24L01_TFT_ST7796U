@@ -1,30 +1,31 @@
 #include "Button.h"
 
+extern TouchState structtouch;
+extern uint16_t tX;
+extern uint16_t tY;
 
-
-Button::Button(int x_, int y_, int w_, int h_, FT6336U& _touch) : btnx(x_), btny(y_), btnw(w_), btnh(h_),touch(_touch)
+Button::Button(int x_, int y_, int w_, int h_) : btnx(x_), btny(y_), btnw(w_), btnh(h_)
 {
 
 }
 
-void Button::getTouchXY()
-{
-       int x_lib = touch.read_touch1_x();
-       int y_lib = touch.read_touch1_y();
+//void Button::getTouchXY()
+//{
+       //int x_lib = touch.read_touch1_x();
+       //int y_lib = touch.read_touch1_y();
 
-       touchx = (480 - y_lib);
-       touchy = x_lib;
-}
+       //touchx = (480 - y_lib);
+       //touchy = x_lib;
+//}
 
 
 
 bool Button::isTouched()
 {  
    
-   if(touch.read_touch1_event() == 2)
+   if(structtouch.pressed)
    { 
-     getTouchXY();
-     return (touchx >= btnx && touchx <= btnx + btnw && touchy >= btny && touchy <= btny + btnh);
+     return (tX >= btnx && tX <= btnx + btnw && tY >= btny && tY <= btny + btnh);
    }else
    {
      return false;

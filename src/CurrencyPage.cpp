@@ -1,11 +1,9 @@
 #include "CurrencyPage.h"
 #include "MainPage.h"
 
-extern FT6336U gl_touch;
-extern PageManager manager;
-extern MainPage mainpage;
+extern TouchState structtouch;
 
-CurrencyPage::CurrencyPage(TFT_eSPI& tft) : tft(tft), btn_exit_CurrencyPage(0, 240, 480, 80, gl_touch)
+CurrencyPage::CurrencyPage(TFT_eSPI& tft) : tft(tft), btn_exit_CurrencyPage(0, 240, 480, 80)
 {
 
 }
@@ -41,6 +39,6 @@ void CurrencyPage::updateDinamic()
   if(btn_exit_CurrencyPage.isTouched())
   {
     manager.setPage(&mainpage);
-
+    structtouch.pressed = false;
   }
 }

@@ -3,6 +3,7 @@
 
 extern PageManager manager;
 extern MainPage mainpage;
+extern TouchState structtouch;
 
 void ForecastPage::drawVLine(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit)
 {
@@ -52,5 +53,6 @@ void ForecastPage::updateDinamic()
    if(btn_exit.isTouched())
    {
       manager.setPage(&mainpage);
+      structtouch.pressed = false;
    } 
 }

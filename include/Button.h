@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "FT6336U.h"
+#include "struct_TouchState.h"
 
 
 class Button
@@ -10,17 +11,17 @@ class Button
       int btny; 
       int btnw; 
       int btnh;
-      FT6336U& touch;
+   
       
       
 
    public:
-      Button(int x, int y, int w, int h, FT6336U& _touch);
+      Button(int x, int y, int w, int h);
       bool isTouched();
-      void getTouchXY(); //метод согласовующий несоответствие реальных координат нажатия с програмными 
+      //void getTouchXY(); //метод согласовующий несоответствие реальных координат нажатия с програмными 
                           // и установки координат касания
-      int touchx = - 1;
-      int touchy = - 1;
+      
+   
       
       
 };

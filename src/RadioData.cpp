@@ -1,9 +1,12 @@
 #include "RadioData.h"
 #include <TFT_eSPI.h>
 #include "RF24.h"
+#include "MainPage.h"
 
-RadioData::RadioData(RF24& radiomodul) :
-radio(radiomodul) {}
+extern MainPage mainpage;
+
+RadioData::RadioData(RF24& radiomodul, struc_radioPaket&_rpaket) :
+radio(radiomodul), radiopaket(_rpaket) {}
 
 
  const struc_radioPaket& RadioData::getData()
@@ -12,10 +15,13 @@ radio(radiomodul) {}
 }
 
 void RadioData::upDate()
-{ if(radio.available())
+{ 
+   
+  if (radio.available())
   {
-  radio.read(&rx_data, sizeof(rx_data)); 
+   radio.read(&rx_data, sizeof(rx_data));
   }
+  
   radiopaket.ID = rx_data[ID];
   radiopaket.temperature = rx_data[TEMPERATURE];
   radiopaket.humidity = rx_data[HUMIDITY];
@@ -24,13 +30,12 @@ void RadioData::upDate()
   radiopaket.adcfl = rx_data[ADCFL];
   radiopaket.vA0 = rx_data[VA0];
   radiopaket.vbat = rx_data[VBAT];
-
+  //Serial.println(rx_data[TEMPERATURE]);
+  //Serial.println(radiopaket.temperature);
+  //Serial.println("RadioData.update()");
+ // delay(500);
 }
 
 
-/*bool RadioData::resive()
-{
-
-}*/
 
 

@@ -17,7 +17,7 @@ class ForecastPage : public Page
 
    public:
    
-   ForecastPage(TFT_eSPI& _tft) : tft(_tft), btn_exit(0, 0, 239, 39, gl_touch)
+   ForecastPage(TFT_eSPI& _tft) : tft(_tft), btn_exit(0, 0, 239, 39)
    {
 
    }

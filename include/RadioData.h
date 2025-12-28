@@ -24,12 +24,12 @@ class RadioData
  private:
    RF24& radio;
    float rx_data[8];
-   struc_radioPaket radiopaket; // структура данных
+   
    
    
    public:
-   RadioData(RF24& radiomodul);
-  // bool resive();
+   RadioData(RF24& radiomodul, struc_radioPaket&_rpaket);
+   struc_radioPaket& radiopaket; // структура данных
    const struc_radioPaket& getData();
    void upDate();
    

@@ -3,7 +3,6 @@
 #include "ForecastPage.h"
 #include "CurrencyPage.h"
 
-class ForecastPage;
 class MainPage;
 extern MainPage mainpage;
 
@@ -12,11 +11,6 @@ class PageManager
   private:
     Page* currentPage = nullptr; // указатель на текущую страницу
     bool needRedrawstatic = false; // флаг перерисовки статики
-
-    //MainPage* mainpage = nullptr;
-    //ForecastPage* forecastpage = nullptr;
-    // SettingsPage* settingspage;
-    // CurrencyPage currencypage;
 
     
 

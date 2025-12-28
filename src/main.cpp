@@ -9,6 +9,7 @@
 #include "CurrencyPage.h"
 #include  <Wire.h>
 #include "FT6336U.h"
+#include "struct_TouchState.h"
 #define CE_PIN  26
 #define CSN_PIN 27
 
@@ -19,23 +20,26 @@ byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"};
 TFT_eSPI tft = TFT_eSPI();
 
 FT6336U gl_touch(5, 34);
+uint16_t tX = -1;
+uint16_t tY = -1;
 
 
 
-//void getTouchXY(int& x, int& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
-//{
+void getTouchXY(uint16_t& x, uint16_t& y) //функция согласлвующая несоответствие реальных координат нажатия с програмными
+{
   
-  // int x_lib = gl_touch.read_touch1_x();
-  // int y_lib = gl_touch.read_touch1_y();
+   uint16_t x_lib = gl_touch.read_touch1_x();
+   uint16_t y_lib = gl_touch.read_touch1_y();
 
-   //x = (480 - y_lib);
-  // y = x_lib;
-//}
+   x = (480 - y_lib);
+   y = x_lib;
+}
 
 
-
-RadioData radiodata (radio);
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
+RadioData radiodata (radio, paket);
+
+TouchState structtouch;
 PageManager manager;
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft);
@@ -71,16 +75,31 @@ void setup()
 
   manager.setPage(&mainpage);
   //settingpage.drawStatic();
-}
+}  
 
 void loop() 
 {   
+    //if(gl_touch.read_touch1_event()==2)
+    //{
+       getTouchXY(tX, tY);
+      //Serial.println(tX);
+      //Serial.println(tY);
     
-    
+       structtouch.pressed = true;
+       structtouch.x = tX;
+       structtouch.y = tY;
+      //Serial.print("X = ");
+      //Serial.println(structtouch.x);
+      //Serial.print("Y = ");
+      //Serial.println(structtouch.y);
+    //}
+    //radiodata.upDate();
     manager.update();
     
     
-
     
+    //Serial.println(paket.temperature);
+    
+    //delay(1000);
 } 
 

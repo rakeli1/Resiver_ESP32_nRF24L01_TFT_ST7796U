@@ -3,9 +3,9 @@
 #include "PageManager.h"
 #include "MainPage.h"
 
-//extern MainPage mainpage;
+extern TouchState structtouch;
 
-SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft), btn_exit(0, 240, 480, 80, gl_touch)
+SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft), btn_exit(0, 240, 480, 80)
 {
 
 }                                                                
@@ -55,5 +55,6 @@ void SettingPage::updateDinamic() // virtual
    if(btn_exit.isTouched())
    {
      manager.setPage(&mainpage);
+     structtouch.pressed = false;
    }
 }
