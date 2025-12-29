@@ -2,6 +2,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
+
+
 enum NetState
 {
    NET_IDLE,         // готовимся к запросу
@@ -14,17 +16,22 @@ enum NetState
 class InternetClient
 {
   private:
-    String serverUrl;              // адрес клиента
+    const char* serverUrl;              // адрес клиента
     String response;               // полученые данные
     NetState state;                // текущее состояние клиента
-    unsigned long requestStartTime;
+    unsigned long updateInterval;
+    unsigned long lastUpdate;
     void startRequest();
+    bool requestStarted;
+    HTTPClient http;
+    WiFiClient client;
+    String bufer;
 
 
    public:
-    InternetClient();
+    InternetClient(const char* url, unsigned long intervalMs);
     void begin(const char*server);  // задаем URL и инициализируем клиента
-    void update();                  // вызывается каждый цикл в loop() внутри проверяем состояние stat
+    void update();                  // вызывается каждый цикл в loop() внутри проверяем состояние states
     const String& getData();        // получить данные когда готово
     NetState getState();            // узнать состояние
 
