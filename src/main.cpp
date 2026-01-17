@@ -10,6 +10,8 @@
 #include  <Wire.h>
 #include "FT6336U.h"
 #include "struct_TouchState.h"
+#include "esp_task_wdt.h"
+#include "WiFiManager.h"
 #define CE_PIN  26
 #define CSN_PIN 27
 
@@ -47,10 +49,13 @@ SettingPage settingpage(tft);
 CurrencyPage currencypage(tft);
 
 
-
+WiFiManager wifi("TP-Link_C810","91891518");
 
 void setup() 
 { 
+  esp_task_wdt_init(5, true);  // Инициализация WatchDog
+  esp_task_wdt_add(NULL);      // Следим за Loop
+  wifi.begin();
   Wire.begin(21, 22);
   Serial.begin(9600);
   gl_touch.begin();
@@ -78,28 +83,22 @@ void setup()
 }  
 
 void loop() 
-{   
-    //if(gl_touch.read_touch1_event()==2)
-    //{
-       getTouchXY(tX, tY);
-      //Serial.println(tX);
-      //Serial.println(tY);
+{      
+       wifi.update();
+       if(wifi.isConnected())
+       {
+         //Serial.println(WiFi.localIP());
+         // тут можно запускать InternetClient
+       }
     
+       getTouchXY(tX, tY);
        structtouch.pressed = true;
        structtouch.x = tX;
        structtouch.y = tY;
-      //Serial.print("X = ");
-      //Serial.println(structtouch.x);
-      //Serial.print("Y = ");
-      //Serial.println(structtouch.y);
-    //}
-    //radiodata.upDate();
-    manager.update();
+      
+       manager.update();
     
+       esp_task_wdt_reset(); // WatchDog
     
-    
-    //Serial.println(paket.temperature);
-    
-    //delay(1000);
 } 
 

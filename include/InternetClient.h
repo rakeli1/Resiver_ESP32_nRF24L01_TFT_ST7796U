@@ -16,7 +16,7 @@ enum NetState
 class InternetClient
 {
   private:
-    const char* serverUrl;              // адрес клиента
+    const char* serverUrl;         // адрес клиента
     String response;               // полученые данные
     NetState state;                // текущее состояние клиента
     unsigned long updateInterval;

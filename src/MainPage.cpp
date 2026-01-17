@@ -216,7 +216,7 @@ void MainPage::updateWiFi(bool connected)
      if(structtouch.pressed)
     {
       if(btn_forecast.isTouched())
-      {  
+      { 
          manager.setPage(&forecastpage);
       }
 

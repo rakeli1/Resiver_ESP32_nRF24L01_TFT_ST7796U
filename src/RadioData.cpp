@@ -34,6 +34,12 @@ void RadioData::upDate()
   //Serial.println(radiopaket.temperature);
   //Serial.println("RadioData.update()");
  // delay(500);
+
+ //Serial.println("DATA IN RX_DATA IN RADIODATA.CPP");
+ //Serial.println(rx_data[TEMPERATURE]);
+ //Serial.println(rx_data[HUMIDITY]);
+ //Serial.println(rx_data[PRESSURE]);
+ //delay(1000);
 }
 
 

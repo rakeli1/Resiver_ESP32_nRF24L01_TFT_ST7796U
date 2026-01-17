@@ -39,7 +39,7 @@ class MainPage : public Page
     int lastBaterry = 0;
     int lastData;
     int lastPecent;
-     String Time;
+    String Time;
     bool lastWiFi = false;
 
     // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
