@@ -12,6 +12,8 @@
 #include "struct_TouchState.h"
 #include "esp_task_wdt.h"
 #include "WiFiManager.h"
+#include "InternetClient.h"
+
 #define CE_PIN  26
 #define CSN_PIN 27
 
@@ -50,11 +52,14 @@ CurrencyPage currencypage(tft);
 
 
 WiFiManager wifi("TP-Link_C810","91891518");
+InternetClient internettForecast("https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric");
+// DataResiver dataresiver;                // InternetClient должен быть создан раньше чем DataResiver
+String globResponse;
 
 void setup() 
 { 
-  esp_task_wdt_init(5, true);  // Инициализация WatchDog
-  esp_task_wdt_add(NULL);      // Следим за Loop
+  //esp_task_wdt_init(5, true);  // Инициализация WatchDog
+  //esp_task_wdt_add(NULL);      // Следим за Loop
   wifi.begin();
   Wire.begin(21, 22);
   Serial.begin(9600);
@@ -63,8 +68,7 @@ void setup()
   tft.init();
   tft.setRotation(3); // левый верхний угол - 0 координат(x- вправо , y - вниз). контакты дисплея слева 
   tft.fillScreen(TFT_DARKGREY);
-  //mainPage.drawStatic();
-  //foreCast.drawStatic();
+  
   
   radio.begin();
   radio.setAutoAck(1);
@@ -79,16 +83,25 @@ void setup()
   radio.startListening();
 
   manager.setPage(&mainpage);
-  //settingpage.drawStatic();
+  
 }  
-
+int serial = 0;
 void loop() 
 {      
        wifi.update();
        if(wifi.isConnected())
        {
+         mainpage.lastWiFi = true;
          //Serial.println(WiFi.localIP());
          // тут можно запускать InternetClient
+         internettForecast.update();
+         
+         //Serial.println(globResponse);
+
+       } else
+       {
+         mainpage.lastWiFi = false;
+         Serial.println("WiFi disconnected!!!");
        }
     
        getTouchXY(tX, tY);
@@ -97,8 +110,16 @@ void loop()
        structtouch.y = tY;
       
        manager.update();
-    
-       esp_task_wdt_reset(); // WatchDog
+       
+       if (serial == 6)
+       {
+         globResponse = internettForecast.response;
+         //Serial.println(globResponse);
+         
+       }
+
+        serial++;
+       //esp_task_wdt_reset(); // WatchDog
     
 } 
 

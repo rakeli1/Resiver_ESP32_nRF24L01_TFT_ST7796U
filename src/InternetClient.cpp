@@ -1,91 +1,73 @@
 #include "InternetClient.h"
-#include <WiFi.h> 
-#include <HTTPClient.h>
 
-
-
-InternetClient::InternetClient(const char* url, unsigned long intervalMs)
-   : serverUrl(url), updateInterval(intervalMs)
+InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
 {
-
+   
 }
 
- const String& InternetClient::getData()
-{
-    return response;
-}
 
-NetState InternetClient::getState() 
-{
-    return state;
-}
 
-void InternetClient::startRequest()
-{
-    response = "";
-    state = NET_REQUEST;
-    requestStarted = false;
-}
-
-void InternetClient::update()
-{
-    unsigned long now = millis();
-
-    switch (state)
+ void InternetClient::update()
+ {
+    switch(state)
     {
-    case NET_IDLE :
-        if(now - lastUpdate >= updateInterval)
-        {
-            startRequest();
-        }
+       case IDLE :
+        if(requestStarted)
+          state = CONNECTING;
+       break; 
+
+        case CONNECTING :
+        http.begin(serverUrl);
+        state = WAIT_RESPONSE;
         break;
 
-    case NET_REQUEST : 
-        if(!requestStarted) 
-        {
-            http.begin(client, serverUrl);
-            http.setTimeout(3000);
-            int code = http.sendRequest("GET");
-            if(code < 0)
-            {
-            state = NET_ERROR;
-            } else
-             {
-                state = NET_WAIT_RESPONSE;
-             }
-             requestStarted = true;
-
-        } 
-         break;
-
-    case NET_WAIT_RESPONSE :
-       if(client.connected())
-       {
-        while(client.available())
-        {
-            bufer += (char)client.read();        
-        }
-        } else 
-        {
-            state = NET_DONE;
-            http.end();
-        }   
-
-         break;
+        case WAIT_RESPONSE :
         
-    
-    case NET_DONE :
-        state = NET_IDLE; // вернулись в ожидание
-         break;
-
-    case NET_ERROR :
-        state = NET_IDLE; // можно добавить повтор через интервал
+        int code = http.GET();
+        if(code > 0)
+        {
+          response = http.getString();
+          DeserializationError err = deserializeJson(doc, http.getStream());
+          if(err)
+          {
+            Serial.print("JSON parse error:");
+            Serial.println(err.c_str());
+          }
+          state = DONE;
+          Serial.println("REQUEST");
+        }else
+        {
+          state = ERROR;
+          Serial.println("ERROR IN WAIT_RESPONSE");
+        }
         break;
-         
-    default:
+        
+
+        case DONE : 
+        {
+          http.end();
+          //Serial.print(response);
+          requestStarted = false;
+          state = IDLE;
+        }
+        break;
+
+        case ERROR :
+        http.end();
+        state = IDLE;
         break;
     }
-}
+ }
+
+  StaticJsonDocument<1024>& InternetClient::getDoc()
+  {
+    return doc;
+  }
+
+
+       
+
+   
 
 
 

@@ -57,7 +57,7 @@ class MainPage : public Page
     void updateIconWeather(int iconID);
     void updateBaterry();
     void updateTime(String t);
-    void updateWiFi(bool connect);
+    void updateWiFi();
     void updateData(String dateStr);
     void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit);
     void drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color, int repit);  

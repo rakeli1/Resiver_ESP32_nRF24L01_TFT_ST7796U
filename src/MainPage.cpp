@@ -63,7 +63,6 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день
   sprBaterry.createSprite(38, 11); // индикатор батареи в своих размерах
   sprTime.createSprite(150, 40);
-  sprWiFi.createSprite(40, 20);
   sprData.createSprite(150, 40);
 
   tft.setTextDatum(MC_DATUM); // центр по оси Х И по оси Y
@@ -88,7 +87,7 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   sprIcon.pushSprite(200, 100);   // спрайт иконки погоды на текущий день
   sprBaterry.pushSprite(171, 6); // индикатор батареи на своем месте
   sprTime.pushSprite(326, 180);
-  sprWiFi.pushSprite(400, 6);
+  
   sprData.pushSprite(166, 180);
 
     //sprTemp.createSprite(100, 50);
@@ -189,15 +188,13 @@ void MainPage::updateTime(String t)
     sprTime.pushSprite(10, 200);
 }
 
-void MainPage::updateWiFi(bool connected)
-{
-    if(connected != lastWiFi)
-    {
-        sprWiFi.fillSprite(TFT_BLUE);
-        sprWiFi.drawString(connected ? "WiFi" : "NoWiFi", 0, 0, 2);
-        sprWiFi.pushSprite(200, 200);
-        lastWiFi = connected;
-    }
+void MainPage::updateWiFi()
+{ 
+  sprWiFi.createSprite(40, 20);
+  sprWiFi.fillSprite(TFT_BLUE);
+  sprWiFi.drawString(lastWiFi ? "ON" : "OF", 0, 0, 4);
+  sprWiFi.pushSprite(400, 6);
+  
 }
 
 
@@ -209,6 +206,7 @@ void MainPage::updateWiFi(bool connected)
      updatePressure();
      updateHumidity();
      updateTemp();
+     updateWiFi();
      
      //updateBaterry();
   
