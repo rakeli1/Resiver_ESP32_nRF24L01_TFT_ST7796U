@@ -22,7 +22,7 @@ InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
         break;
 
         case WAIT_RESPONSE :
-        
+        {
         int code = http.GET();
         if(code > 0)
         {
@@ -40,6 +40,7 @@ InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
           state = ERROR;
           Serial.println("ERROR IN WAIT_RESPONSE");
         }
+    }
         break;
         
 
@@ -53,8 +54,10 @@ InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
         break;
 
         case ERROR :
+        {
         http.end();
         state = IDLE;
+        }
         break;
     }
  }
