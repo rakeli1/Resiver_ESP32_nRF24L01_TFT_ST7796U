@@ -21,7 +21,7 @@ class InternetClient
     
     String serverUrl;        
     HTTPClient http;
-    StaticJsonDocument<1024>doc;
+    JsonDocument doc;
     
 
   
@@ -33,7 +33,7 @@ class InternetClient
      String response;
      InternetClient(String _serverUrl);
      void update(); 
-     StaticJsonDocument<1024>&getDoc();
+     JsonDocument &getDoc();
      
             
 

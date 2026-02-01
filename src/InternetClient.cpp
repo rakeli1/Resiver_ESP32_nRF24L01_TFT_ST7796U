@@ -62,7 +62,7 @@ InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
     }
  }
 
-  StaticJsonDocument<1024>& InternetClient::getDoc()
+  JsonDocument& InternetClient::getDoc()
   {
     return doc;
   }

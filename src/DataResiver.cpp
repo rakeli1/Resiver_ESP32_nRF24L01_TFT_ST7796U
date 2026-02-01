@@ -8,7 +8,7 @@ DataResiver::DataResiver(InternetClient& _client1) : client1(_client1)
 
 
 
-void DataResiver::parseFromJsonDoc(StaticJsonDocument<1024>&doc)  // аргумент StaticJsonDocument<1024>&doc возвращается с помощью
+/*void DataResiver::parseFromJsonDoc(StaticJsonDocument<1024>&doc)  // аргумент StaticJsonDocument<1024>&doc возвращается с помощью
 {                                                                 // метода client1.getDoc() екземпляра класса client1 класса InternetClient
     JsonArray list = doc["list"]; 
 
@@ -412,6 +412,31 @@ void DataResiver::parseFromJsonDoc(StaticJsonDocument<1024>&doc)  // аргум�
   JsonObject list_39_weather_0 = list_39["weather"][0];
   const char* list_39_weather_0_main = list_39_weather_0["main"];                      // осадки 40-ой точки
   const char* list_39_dt_txt = list_39["dt_txt"];                                      // дата-время 40-ой точки
-  sscanf(list_39_dt_txt, "%*d-%d-%d %d:%*d-%*d", &month39, &day39, &hour39);
+  sscanf(list_39_dt_txt, "%*d-%d-%d %d:%*d-%*d", &month39, &day39, &hour39);  // разбивка по переменным даты одной точки прогноза погоды dt_txt
   weather39 = parseWeatherType(list_39_weather_0_main);
+}*/
+
+
+//---------------Функция парсинга основаная на цикле и массиве структур Forecastpoint--------------
+
+void DataResiver::parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray)
+{
+  for(int i = 0; i < FORECAST_POINTS; i++)
+  {
+    forecastarray[i].temperature = doc["list"][i]["main"]["temp"].as<float>(); // temperature
+
+    const char* dt_txt = doc["list"][i]["dt_txt"];                        // data and time of point
+
+    int month, day, hour;
+
+    forecastarray[i].month = month;
+    forecastarray[i].day   = day;
+    forecastarray[i].hour  = hour;
+
+    sscanf(dt_txt, "%*d-%d-%d %d:%*d:%*d, &month, &day, &hour");
+
+    const char* weather = doc["list"][i]["weather"][0]["main"];
+    
+    forecastarray[i].weather = parseWeatherType(weather);
+  }
 }

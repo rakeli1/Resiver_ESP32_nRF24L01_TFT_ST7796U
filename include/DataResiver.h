@@ -4,6 +4,7 @@
 #include "InternetClient.h"
 #include <ArduinoJson.h>
 #include "TFT_eSPI.h"
+#define FORECAST_POINTS 40
 
 extern TFT_eSPI tft;
 
@@ -85,14 +86,14 @@ WeatherType parseWeatherType(const char* weather)
    return WEATHER_UNKNOWN;
 }
 
-struct FirstPointForecast
+struct ForecastPoint
 {
    //int year;
-   float temp;
+   float temperature;
    int month;
    int day;
    int hour;
-   WeatherType weathertype;
+   WeatherType weather;
    ParthDayID parthday;
 };
 
@@ -102,7 +103,7 @@ class DataResiver
     private:
     InternetClient& client1;
     //----------- 0 точка-------------
-    float list_0_main_temp = 0;
+   /* float list_0_main_temp = 0;
     int month0;
     int day0;
     int hour0;
@@ -340,13 +341,15 @@ class DataResiver
     int month39;
     int day39;
     int hour39;
-    WeatherType weather39;
+    WeatherType weather39;*/
 
 
     public:
      DataResiver(InternetClient& _client1);
-     void parseFromJsonDoc(StaticJsonDocument<1024>&doc);
-     FirstPointForecast& getFirstPointForecast();
+     ForecastPoint forecastarray[FORECAST_POINTS];
+     //void parseFromJsonDoc(StaticJsonDocument<1024>&doc);
+     void parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray);
+     ForecastPoint& getForecastPoint();
      void parseWeather(const char* weather);
      
      
