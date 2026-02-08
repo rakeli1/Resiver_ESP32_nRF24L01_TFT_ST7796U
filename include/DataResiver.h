@@ -349,10 +349,10 @@ class DataResiver
 
     public:
      DataResiver(InternetClient& _client1);
-     ForecastPoint forecastarray[FORECAST_POINTS];
-     int daysForecast[6] {0};
+     ForecastPoint forecastarray[FORECAST_POINTS]; // массив структур хранящих точки прогноза с параметрами для отображения на дисплее
+     int daysForecast[6] {0};                      // массив хранящий даты дней и их количество полученное с сайта openweathermap
      //void parseFromJsonDoc(StaticJsonDocument<1024>&doc);
-     void parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray);
+     void parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray);// парсинг данных из JSON файла полученного с сервера погоды
      // ForecastPoint& getForecastPoint();
      void parseWeather(const char* weather);
      

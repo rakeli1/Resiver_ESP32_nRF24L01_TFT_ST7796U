@@ -12,6 +12,12 @@ extern FT6336U gl_touch;
 
 class ForecastPage : public Page
 {
+   
+
+   private:
+   TFT_eSPI& tft;
+   Button btn_exit; 
+
    public:
 
    struct Cell
@@ -24,15 +30,13 @@ class ForecastPage : public Page
       bool cell_special;
       bool cell_valid;
 
-      void cellDraw();
+      String cellDrawWeather(TFT_eSPI& tft);
+      void cellDraw(TFT_eSPI& tft);
+      
        
 
       
    };
-
-   private:
-   TFT_eSPI& tft;
-   Button btn_exit; 
  
   
 
