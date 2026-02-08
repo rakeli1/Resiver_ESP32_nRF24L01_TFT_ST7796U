@@ -68,34 +68,37 @@ WeatherType parseWeatherType(const char* weather)
 {
    if(!weather) return WEATHER_UNKNOWN;
 
-   if(strcmp(weather, "Clear") == 0) return CLEAR;
-   if(strcmp(weather, "Clouds") == 0) return CLOUDS;
-   if(strcmp(weather, "Rain") == 0) return RAIN;
-   if(strcmp(weather, "Drizzle") == 0) return DRIZZLE;
+   if(strcmp(weather, "Clear") == 0)        return CLEAR;
+   if(strcmp(weather, "Clouds") == 0)       return CLOUDS;
+   if(strcmp(weather, "Rain") == 0)         return RAIN;
+   if(strcmp(weather, "Drizzle") == 0)      return DRIZZLE;
    if(strcmp(weather, "Thunderstorm") == 0) return THUNDERSTORM;
-   if(strcmp(weather, "Snow") == 0) return SNOW;
-   if(strcmp(weather, "Mist") == 0) return MIST;
-   if(strcmp(weather, "Smoke") == 0) return SMOKE;
-   if(strcmp(weather, "Haze") == 0) return HAZE;
-   if(strcmp(weather, "Dust") == 0) return DUST;
-   if(strcmp(weather, "Sand") == 0) return SAND;
-   if(strcmp(weather, "Ash") == 0) return ASH;
-   if(strcmp(weather, "Squall") == 0) return SQUALL;
-   if(strcmp(weather, "Tornado") == 0) return TORNADO;
+   if(strcmp(weather, "Snow") == 0)         return SNOW;
+   if(strcmp(weather, "Mist") == 0)         return MIST;
+   if(strcmp(weather, "Smoke") == 0)        return SMOKE;
+   if(strcmp(weather, "Haze") == 0)         return HAZE;
+   if(strcmp(weather, "Dust") == 0)         return DUST;
+   if(strcmp(weather, "Sand") == 0)         return SAND;
+   if(strcmp(weather, "Ash") == 0)          return ASH;
+   if(strcmp(weather, "Squall") == 0)       return SQUALL;
+   if(strcmp(weather, "Tornado") == 0)      return TORNADO;
 
    return WEATHER_UNKNOWN;
 }
 
+
 struct ForecastPoint
 {
    //int year;
-   float temperature;
-   int month;
-   int day;
-   int hour;
+   float temperature = 0;
+   int month = 0;
+   int day = 0;
+   int hour = 0;
+   //uint32_t dt = 0;
    WeatherType weather;
-   ParthDayID parthday;
+   ParthDayID parthdayID;
 };
+
 
 
 class DataResiver
@@ -347,9 +350,10 @@ class DataResiver
     public:
      DataResiver(InternetClient& _client1);
      ForecastPoint forecastarray[FORECAST_POINTS];
+     int daysForecast[6] {0};
      //void parseFromJsonDoc(StaticJsonDocument<1024>&doc);
      void parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray);
-     ForecastPoint& getForecastPoint();
+     // ForecastPoint& getForecastPoint();
      void parseWeather(const char* weather);
      
      

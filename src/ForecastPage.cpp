@@ -65,62 +65,13 @@ void ForecastPage::updateDinamic()
    } 
 }
 
- /*void drawForecastGrid()  // Функция заполнения ячеек страницы прогноза погоды
- {
-  for(int day = 0; day < DAYS; day++)
-  {
-    for (int part = 0; part < PARTS; part++)
-    {
-     // drawCell(part, day, forecast[day][part]);
-    }
-  }
- }*/
-
-/*struct Cell
+void ForecastPage::Cell::cellDraw()
 {
-  bool valid;
-  int8_t temp;
-  String label;
-};*/
-
-/*void drawCell(int day, int part, const Cell& cell)
-{
-  //-----вычисляем координаты ячейки------
-  int x = GRID_X0 + day * CELL_W;
-  int y = GRID_Y0 + part * CELL_H;
-
-  int cx = x + CELL_W / 2;
-  int cy = y + CELL_H / 2;
-
-  //--- если данных нет----
-  if(cell.valid)
-  {
-    tft.setTextDatum(MC_DATUM);
-    tft.drawString("--", cx, cy, 2);
-    return;
-  }
-    //--- температура (верх ячейки)
-     if(cell.temp != NO_TEMP)
-     {
-      tft.setTextDatum(MC_DATUM);
-        tft.drawString(
-        String(cell.temp) + tft.print((char)176), // это значек - кружочек цельсия
-        cx,
-        y + CELL_H * 0.30,
-        2
-      );
-     }
-
-     if(!cell.label.isEmpty())
-     {
-      tft.setTextDatum(MC_DATUM);
-      tft.drawString(
-        cell.label, 
-        cx, 
-        y + CELL_H * 0.75,
-        1
-      );
-     }
   
-}*/
+}
+
+
+
+
+    
 
