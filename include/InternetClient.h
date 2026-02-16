@@ -21,13 +21,14 @@ class InternetClient
     
     String serverUrl;        
     HTTPClient http;
-    JsonDocument doc;
+    
     
 
   
 
 
    public:
+     JsonDocument doc;
      NetState state = IDLE;
      bool requestStarted = true;
      String response;

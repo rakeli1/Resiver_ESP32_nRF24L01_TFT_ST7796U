@@ -27,7 +27,7 @@ InternetClient::InternetClient(String _serverUrl ) : serverUrl(_serverUrl)
         if(code > 0)
         {
           response = http.getString();
-          DeserializationError err = deserializeJson(doc, http.getStream());
+          DeserializationError err = deserializeJson(doc, response);
           if(err)
           {
             Serial.print("JSON parse error:");

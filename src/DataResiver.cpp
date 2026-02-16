@@ -1,5 +1,6 @@
 #include "DataResiver.h"
 #include "ArduinoJson.h"
+#include "InternetClient.h"
 
 DataResiver::DataResiver(InternetClient& _client1) : client1(_client1)
 {
@@ -416,44 +417,71 @@ DataResiver::DataResiver(InternetClient& _client1) : client1(_client1)
   weather39 = parseWeatherType(list_39_weather_0_main);
 }*/
 
+WeatherType DataResiver::parseWeatherType(const char* weather)
+{
+   if(!weather) return WEATHER_UNKNOWN;
+
+   if(strcmp(weather, "Clear") == 0)        return CLEAR;
+   if(strcmp(weather, "Clouds") == 0)       return CLOUDS;
+   if(strcmp(weather, "Rain") == 0)         return RAIN;
+   if(strcmp(weather, "Drizzle") == 0)      return DRIZZLE;
+   if(strcmp(weather, "Thunderstorm") == 0) return THUNDERSTORM;
+   if(strcmp(weather, "Snow") == 0)         return SNOW;
+   if(strcmp(weather, "Mist") == 0)         return MIST;
+   if(strcmp(weather, "Smoke") == 0)        return SMOKE;
+   if(strcmp(weather, "Haze") == 0)         return HAZE;
+   if(strcmp(weather, "Dust") == 0)         return DUST;
+   if(strcmp(weather, "Sand") == 0)         return SAND;
+   if(strcmp(weather, "Ash") == 0)          return ASH;
+   if(strcmp(weather, "Squall") == 0)       return SQUALL;
+   if(strcmp(weather, "Tornado") == 0)      return TORNADO;
+
+   return WEATHER_UNKNOWN;
+}
 
 //---------------Функция парсинга основаная на цикле и массиве структур Forecastpoint--------------
 
 void DataResiver::parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray)
 {
+   Serial.print("Real list size: ");
+   Serial.println(doc["list"].size());
   for(int i = 0; i < FORECAST_POINTS; i++)
-  {
-    forecastarray[i].temperature = doc["list"][i]["main"]["temp"].as<float>(); // temperature
+  { 
+    Serial.print("iteraciaparsing = ");
+    Serial.println(i);
 
+    forecastarray[i].temperature = doc["list"][i]["main"]["temp"].as<float>(); // temperature
+   
     const char* dt_txt = doc["list"][i]["dt_txt"];                             // data and time of point 
 
-    int month, day, hour;
+    int month = 0, day = 0, hour = 0;
 
-    sscanf(dt_txt, "%*d-%d-%d %d:%*d:%*d, &month, &day, &hour");
+    sscanf(dt_txt, "%*d-%d-%d %d:%*d:%*d", &month, &day, &hour);
 
     forecastarray[i].month = month;
     forecastarray[i].day   = day;
     forecastarray[i].hour  = hour;
-    //forecastarray[i].dt    = doc["list"][i]["dt"] | 0;
+   
     const char* weather = doc["list"][i]["weather"][0]["main"];
     
-    forecastarray[i].weather = parseWeatherType(weather);
+    forecastarray[i].weathertype = parseWeatherType(weather);
+    iteracia = i;
   }
   //------------------внесение количества календарных дней в массив dayForecast[6] для корректного отоборажения параметров на дисплее----------------
     
     for(int clear = 0; clear < 6; clear++)
     {
-      daysForecast[clear] = 0;
+      dataForecast[clear] = 0;
     }
    
-    daysForecast[0] = forecastarray[0].day; 
+    dataForecast[0] = forecastarray[0].day; 
     int uniquecount = 1;                            // переменная с количеством  календарных дней                  
   
    for(int days = 1; days < FORECAST_POINTS; days++)
   {
     if(forecastarray[days].day != forecastarray[days - 1].day)
     {
-      daysForecast[uniquecount] = forecastarray[days].day;
+      dataForecast[uniquecount] = forecastarray[days].day;
       uniquecount++;
     }
   }
@@ -465,81 +493,104 @@ void DataResiver::parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* for
      switch (forecastarray[id].hour)
      {
      case 0 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = NIGHT1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = NIGHT2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = NIGHT3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = NIGHT4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = NIGHT5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = NIGHT6;
-      
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = NIGHT1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = NIGHT2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = NIGHT3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = NIGHT4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = NIGHT5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = NIGHT6;
+        
       break;
 
      case 3 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = NIGHT1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = NIGHT2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = NIGHT3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = NIGHT4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = NIGHT5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = NIGHT6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = NIGHT1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = NIGHT2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = NIGHT3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = NIGHT4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = NIGHT5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = NIGHT6;
+        
+      break;
 
      case 6 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = MORNING1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = MORNING2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = MORNING3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = MORNING4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = MORNING5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = MORNING6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = MORNING1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = MORNING2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = MORNING3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = MORNING4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = MORNING5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = MORNING6;
+       
+      break;
 
      case 9 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = MORNING1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = MORNING2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = MORNING3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = MORNING4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = MORNING5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = MORNING6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = MORNING1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = MORNING2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = MORNING3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = MORNING4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = MORNING5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = MORNING6;
+       
+      break;
 
      case 12 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = DAY1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = DAY2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = DAY3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = DAY4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = DAY5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = DAY6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = DAY1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = DAY2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = DAY3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = DAY4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = DAY5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = DAY6;
+      
+       break;
 
      case 15 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = DAY1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = DAY2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = DAY3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = DAY4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = DAY5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = DAY6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = DAY1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = DAY2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = DAY3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = DAY4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = DAY5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = DAY6;
+       
+      break;
 
      case 18 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = EVENING1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = EVENING2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = EVENING3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = EVENING4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = EVENING5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = EVENING6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = EVENING1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = EVENING2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = EVENING3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = EVENING4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = EVENING5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = EVENING6;
+     
+      break;
 
      case 21 :
-      if(forecastarray[id].day == daysForecast[0]) forecastarray[id].parthdayID = EVENING1;
-      if(forecastarray[id].day == daysForecast[1]) forecastarray[id].parthdayID = EVENING2;
-      if(forecastarray[id].day == daysForecast[2]) forecastarray[id].parthdayID = EVENING3;
-      if(forecastarray[id].day == daysForecast[3]) forecastarray[id].parthdayID = EVENING4;
-      if(forecastarray[id].day == daysForecast[4]) forecastarray[id].parthdayID = EVENING5;
-      if(forecastarray[id].day == daysForecast[5] && daysForecast[5] != 0) forecastarray[id].parthdayID = EVENING6;
-     break;
+      if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = EVENING1;
+      if(forecastarray[id].day == dataForecast[1]) forecastarray[id].parthdayID = EVENING2;
+      if(forecastarray[id].day == dataForecast[2]) forecastarray[id].parthdayID = EVENING3;
+      if(forecastarray[id].day == dataForecast[3]) forecastarray[id].parthdayID = EVENING4;
+      if(forecastarray[id].day == dataForecast[4]) forecastarray[id].parthdayID = EVENING5;
+      if(forecastarray[id].day == dataForecast[5] && dataForecast[5] != 0) forecastarray[id].parthdayID = EVENING6;
+      
+      break;
 
      
-     default:
-      break;
+    // default:
+     // break;
+     }
+     int indexdata = 0;
+     for(int data = 40; data < 46; data++)
+     {  
+        forecastarray[data].day = dataForecast[indexdata];
+        switch(indexdata)
+        {
+          case 0 : forecastarray[data].parthdayID = DATA1; break;
+          case 1 : forecastarray[data].parthdayID = DATA2; break;
+          case 2 : forecastarray[data].parthdayID = DATA3; break;
+          case 3 : forecastarray[data].parthdayID = DATA4; break;
+          case 4 : forecastarray[data].parthdayID = DATA5; break;
+          case 5 : forecastarray[data].parthdayID = DATA6; break;
+
+        }
+        indexdata++;
      }
    }
 }

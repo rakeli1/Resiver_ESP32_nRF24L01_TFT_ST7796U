@@ -13,6 +13,7 @@
 #include "esp_task_wdt.h"
 #include "WiFiManager.h"
 #include "InternetClient.h"
+#include "DataResiver.h"
 
 #define CE_PIN  26
 #define CSN_PIN 27
@@ -22,7 +23,7 @@ RF24 radio(CE_PIN,CSN_PIN);
 byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"}; 
 
 TFT_eSPI tft = TFT_eSPI();
-
+WiFiManager wifi("TP-Link_C810","91891518");
 FT6336U gl_touch(5, 34);
 uint16_t tX = -1;
 uint16_t tY = -1;
@@ -45,15 +46,17 @@ RadioData radiodata (radio, paket);
 
 TouchState structtouch;
 PageManager manager;
+InternetClient forecastResponse("https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric");
+DataResiver dataresiver(forecastResponse);   // InternetClient должен быть создан раньше чем DataResiver
+
 MainPage mainpage(tft, paket, radiodata, manager);
-ForecastPage forecastpage(tft);
+ForecastPage forecastpage(tft, dataresiver);
 SettingPage settingpage(tft);
 CurrencyPage currencypage(tft);
 
 
-WiFiManager wifi("TP-Link_C810","91891518");
-InternetClient internettForecast("https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric");
-// DataResiver dataresiver;                // InternetClient должен быть создан раньше чем DataResiver
+
+              
 String globResponse;
 
 void setup() 
@@ -85,7 +88,7 @@ void setup()
   manager.setPage(&mainpage);
   
 }  
-int serial = 0;
+int serialiter = 0;
 void loop() 
 {      
        wifi.update();
@@ -93,8 +96,16 @@ void loop()
        {
          mainpage.lastWiFi = true;
          //Serial.println(WiFi.localIP());
-         // тут можно запускать InternetClient
-         internettForecast.update();
+         // тут можно запускать InternetClien
+         forecastResponse.update();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
+         if ((forecastResponse.doc["cod"] == "200") && dataresiver.iteracia < 39)
+          {
+         //globResponse = forecastResponse.response;
+         //Serial.println(globResponse);
+           dataresiver.parseForecastFromJsonDoc(forecastResponse.getDoc(), dataresiver.forecastarray);
+          
+          }
+         
          
          //Serial.println(globResponse);
 
@@ -110,15 +121,24 @@ void loop()
        structtouch.y = tY;
       
        manager.update();
-       
-       if (serial == 6)
-       {
-         globResponse = internettForecast.response;
-         //Serial.println(globResponse);
-         
+      if(dataresiver.iteracia == 39 && serialiter < 46)
+      {  
+       for(int iter = 0; iter < 46; iter++)
+       { 
+         Serial.print("serialiter = ");
+         Serial.println(serialiter);
+         Serial.println(dataresiver.forecastarray[iter].temperature);
+         Serial.println(dataresiver.forecastarray[iter].day);
+         Serial.println(dataresiver.forecastarray[iter].hour);
+         Serial.println(dataresiver.forecastarray[iter].parthdayID); 
+         Serial.println(dataresiver.forecastarray[iter].weathertype);
+         Serial.println("======================================");
+         serialiter++;
+         delay(1000);
        }
+      }
 
-        serial++;
+        
        //esp_task_wdt_reset(); // WatchDog
     
 } 
