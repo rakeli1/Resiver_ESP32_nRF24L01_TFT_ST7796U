@@ -20,7 +20,7 @@ extern void getTouchXY(int& x, int& y);
 
 MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
- sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTime(&display),
+ sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTimeHour(&display), sprTimeMinutes(&display),
  sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
   btn_forecast(0, 0, 160, 70), btn_settings(0, 70, 160, 70),
    btn_currencypage(0, 140, 160, 70)
@@ -62,7 +62,7 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день
   sprBaterry.createSprite(38, 11); // индикатор батареи в своих размерах
-  sprTime.createSprite(150, 40);
+  
   sprData.createSprite(150, 40);
 
   tft.setTextDatum(MC_DATUM); // центр по оси Х И по оси Y
@@ -78,6 +78,8 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   tft.drawString("SETTINGS", 80, 114);
   tft.drawString("CURRENCY", 80, 185);
   tft.drawString("FORECAST", 80, 40);
+  tft.setTextFont(6);
+  tft.drawString(":", 404, 205);
 
   tft.setTextDatum(MC_DATUM);
   tft.setTextColor(TFT_BLACK);
@@ -86,7 +88,7 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
 
   sprIcon.pushSprite(200, 100);   // спрайт иконки погоды на текущий день
   sprBaterry.pushSprite(171, 6); // индикатор батареи на своем месте
-  sprTime.pushSprite(326, 180);
+  
   
   sprData.pushSprite(166, 180);
 
@@ -181,11 +183,21 @@ void MainPage::updateBaterry()
     }
 }
 
-void MainPage::updateTime(String t)
-{
-    sprTime.fillSprite(TFT_BLUE);
-    sprTime.drawString(t, 0, 0, 4);
-    sprTime.pushSprite(10, 200);
+void MainPage::updateTime()
+{   
+    sprTimeHour.createSprite(56, 40);
+    sprTimeHour.fillSprite(TFT_DARKGREY);
+    sprTimeHour.setTextColor(TFT_BLACK);
+    sprTimeHour.setTextDatum(MC_DATUM);
+    sprTimeHour.drawString(String(hours), 28, 25, 6);
+    sprTimeHour.pushSprite(336, 180);
+
+    sprTimeMinutes.createSprite(56 , 40);
+    sprTimeMinutes.fillSprite(TFT_DARKGREY);
+    sprTimeMinutes.setTextColor(TFT_BLACK);
+    sprTimeMinutes.setTextDatum(MC_DATUM);
+    sprTimeMinutes.drawString(String(minutes), 28, 25, 6);
+    sprTimeMinutes.pushSprite(416, 180);
 }
 
 void MainPage::updateWiFi()
@@ -203,6 +215,7 @@ void MainPage::updateWiFi()
 {  
      radiodata.upDate();
      //sensorData = radiodata.getData();
+     updateTime();
      updatePressure();
      updateHumidity();
      updateTemp();
@@ -233,3 +246,7 @@ void MainPage::updateWiFi()
 }
 
  
+    
+    
+
+   

@@ -28,21 +28,21 @@ String ForecastPage::Cell::cellreturnWeather()
    switch(cell_Weathertype)
    {
      case CLEAR :        return "clear";  break;
-     case CLOUDS :       return "cloud"; break;
+     case CLOUDS :       return "cloud";  break;
      case RAIN :         return "rain";   break;
-     case DRIZZLE :      return "driz";  break;
-     case THUNDERSTORM : return "thund"; break;
-     case SNOW :         return "snow"; break;
-     case MIST :         return "mist"; break;
-     case SMOKE :        return "smoke"; break;
-     case HAZE :         return "haze"; break;
-     case DUST :         return "dust"; break;
-     case SAND :         return "sand"; break;
-     case ASH :          return "ash";  break;
-     case SQUALL :       return "squal"; break;
-     case TORNADO :      return "torna"; break;
+     case DRIZZLE :      return "driz";   break;
+     case THUNDERSTORM : return "thund";  break;
+     case SNOW :         return "snow";   break;
+     case MIST :         return "mist";   break;
+     case SMOKE :        return "smoke";  break;
+     case HAZE :         return "haze";   break;
+     case DUST :         return "dust";   break;
+     case SAND :         return "sand";   break;
+     case ASH :          return "ash";    break;
+     case SQUALL :       return "squal";  break;
+     case TORNADO :      return "torna";  break;
      case WEATHER_UNKNOWN : return "her"; break;
-     default :           return "unkn"; break;
+     default :           return "unkn";   break;
     } 
     
 }
@@ -195,7 +195,7 @@ void ForecastPage::Cell::cellDraw(TFT_eSPI& tft)
                     tft.drawString(cellreturnWeather(), 448, 305, 4);
     break;
  
-    default:        //tft.setTextDatum(MC_DATUM);
+    default:       //tft.setTextDatum(MC_DATUM);
                    // tft.drawString(String(0), 128, 95, 4);
                    // tft.drawString("unkn", 128, 125, 4);
     break;

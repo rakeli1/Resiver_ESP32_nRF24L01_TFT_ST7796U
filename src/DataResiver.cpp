@@ -1,8 +1,8 @@
 #include "DataResiver.h"
 #include "ArduinoJson.h"
-#include "InternetClient.h"
+#include "InternetForecast.h"
 
-DataResiver::DataResiver(InternetClient& _client1) : client1(_client1)
+DataResiver::DataResiver(InternetForecast& _client1) : client1(_client1)
 {
  
 }
@@ -490,7 +490,7 @@ void DataResiver::parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* for
 
    for(int id = 0; id < FORECAST_POINTS; id++)
    {
-     switch (forecastarray[id].hour)
+     switch (forecastarray[id].hour) 
      {
      case 0 :
       if(forecastarray[id].day == dataForecast[0]) forecastarray[id].parthdayID = NIGHT1;

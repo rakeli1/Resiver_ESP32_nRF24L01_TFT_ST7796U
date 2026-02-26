@@ -1,7 +1,7 @@
 #pragma once
 #include "struct_radioPaket.h"
 #include "RadioData.h"
-#include "InternetClient.h"
+#include "InternetForecast.h"
 #include <ArduinoJson.h>
 #include "TFT_eSPI.h"
 #define FORECAST_POINTS 40
@@ -86,7 +86,7 @@ struct ForecastPoint
 class DataResiver
 {
     private:
-    InternetClient& client1;
+    InternetForecast& client1;
     //----------- 0 точка-------------
    /* float list_0_main_temp = 0;
     int month0;
@@ -330,7 +330,7 @@ class DataResiver
 
 
     public:
-     DataResiver(InternetClient& _client1);
+     DataResiver(InternetForecast& _client1);
      ForecastPoint forecastarray[46]; // массив структур хранящих точки прогноза с параметрами для отображения на дисплее
      int dataForecast[6] {0};                      // массив хранящий даты дней и их количество полученное с сайта openweathermap
      int iteracia = 0;                     

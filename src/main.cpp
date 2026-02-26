@@ -12,13 +12,15 @@
 #include "struct_TouchState.h"
 #include "esp_task_wdt.h"
 #include "WiFiManager.h"
-#include "InternetClient.h"
+#include "InternetForecast.h"
 #include "DataResiver.h"
+#include "InternetTimeData.h"
+#include <RTClib.h>
 
 #define CE_PIN  26
 #define CSN_PIN 27
 
-
+RTC_DS3231 rtc;
 RF24 radio(CE_PIN,CSN_PIN);
 byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"}; 
 
@@ -44,10 +46,16 @@ void getTouchXY(uint16_t& x, uint16_t& y) //функция согласлвую�
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
 RadioData radiodata (radio, paket);
 
+String forecastRequest = "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
+String timeDataRequest1 = "time.ntp.org.ua";
+String timeDataRequest2 = "pool.ntp.org.ua";
+String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20250901";
+
 TouchState structtouch;
 PageManager manager;
-InternetClient forecastResponse("https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric");
+InternetForecast forecastResponse(forecastRequest);
 DataResiver dataresiver(forecastResponse);   // InternetClient должен быть создан раньше чем DataResiver
+InternetTimeData timedata(timeDataRequest1, timeDataRequest2, rtc);
 
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft, dataresiver);
@@ -67,6 +75,13 @@ void setup()
   Wire.begin(21, 22);
   Serial.begin(9600);
   gl_touch.begin();
+  if(!rtc.begin())
+  {
+    Serial.println("RTC not found");
+  }else
+  {
+    Serial.println("RTC RUNED!");
+  }
  
   tft.init();
   tft.setRotation(3); // левый верхний угол - 0 координат(x- вправо , y - вниз). контакты дисплея слева 
@@ -85,19 +100,22 @@ void setup()
   radio.powerUp();
   radio.startListening();
 
+  
   manager.setPage(&mainpage);
   
 }  
-int serialiter = 0;
+//int serialiter = 0;
 void loop() 
-{      
+{   
+  
+       
        wifi.update();
        if(wifi.isConnected())
        {
          mainpage.lastWiFi = true;
          //Serial.println(WiFi.localIP());
          // тут можно запускать InternetClien
-         forecastResponse.update();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
+         forecastResponse.updateForecast();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
          if ((forecastResponse.doc["cod"] == "200") && dataresiver.iteracia < 39)
           {
          //globResponse = forecastResponse.response;
@@ -121,7 +139,7 @@ void loop()
        structtouch.y = tY;
       
        manager.update();
-      if(dataresiver.iteracia == 39 && serialiter < 46)
+     /* if(dataresiver.iteracia == 39 && serialiter < 46)
       {  
        for(int iter = 0; iter < 46; iter++)
        { 
@@ -136,10 +154,25 @@ void loop()
          serialiter++;
          delay(1000);
        }
-      }
+      }*/
+
+      /*if(millis() - lastRead >= interval)       // Время Дата
+      {
+        lastRead = millis();                      // Время Дата
+        DateTime now = rtc.now();                 // Время Дата
+
+        if(now.minute() != lastMinute )           // Время Дата
+        {
+          lastMinute = now.minute();              // Время дата
+
+          drawTimeData(now.hour(), now.minute()); // Время Дата
+        }
+      }*/
 
         
        //esp_task_wdt_reset(); // WatchDog
+
+       
     
 } 
 

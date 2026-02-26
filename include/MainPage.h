@@ -9,7 +9,10 @@
 #include "ForecastPage.h"
 #include "SettingPage.h"
 #include "CurrencyPage.h"
+#include "InternetTimeData.h"
+#include  "RTClib.h"
 
+extern RTC_DS3231 rtc;
 
 class MainPage : public Page
 {
@@ -27,7 +30,8 @@ class MainPage : public Page
     TFT_eSprite sprPressure;
     TFT_eSprite sprIcon;
     TFT_eSprite sprBaterry;
-    TFT_eSprite sprTime;
+    TFT_eSprite sprTimeHour;
+    TFT_eSprite sprTimeMinutes;
     TFT_eSprite sprWiFi;
     TFT_eSprite sprData;
     
@@ -39,13 +43,15 @@ class MainPage : public Page
     int lastBaterry = 0;
     int lastData;
     int lastPecent;
-    String Time;
+    int hours = 66;
+    int minutes = 88;
     bool lastWiFi = false;
 
     // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
                          // тут будут все данные 
     public:
     MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager);
+    void displayTime();
     void drawStatic() override;
     void updateDinamic() override;
     
@@ -56,7 +62,7 @@ class MainPage : public Page
     void updatePressure();
     void updateIconWeather(int iconID);
     void updateBaterry();
-    void updateTime(String t);
+    void updateTime();
     void updateWiFi();
     void updateData(String dateStr);
     void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit);
