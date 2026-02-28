@@ -4,6 +4,7 @@
 #include "InternetForecast.h"
 #include <ArduinoJson.h>
 #include "TFT_eSPI.h"
+#include "InternetTimeData.h"
 #define FORECAST_POINTS 40
 
 extern TFT_eSPI tft;
@@ -87,6 +88,9 @@ class DataResiver
 {
     private:
     InternetForecast& client1;
+    
+    
+
     //----------- 0 точка-------------
    /* float list_0_main_temp = 0;
     int month0;

@@ -1,8 +1,11 @@
 #include "DataResiver.h"
 #include "ArduinoJson.h"
 #include "InternetForecast.h"
+#include "InternetTimeData.h"
 
 DataResiver::DataResiver(InternetForecast& _client1) : client1(_client1)
+                         
+                         
 {
  
 }

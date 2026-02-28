@@ -54,8 +54,9 @@ String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/e
 TouchState structtouch;
 PageManager manager;
 InternetForecast forecastResponse(forecastRequest);
-DataResiver dataresiver(forecastResponse);   // InternetClient должен быть создан раньше чем DataResiver
 InternetTimeData timedata(timeDataRequest1, timeDataRequest2, rtc);
+DataResiver dataresiver(forecastResponse);   // InternetClient должен быть создан раньше чем DataResiver
+
 
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft, dataresiver);
@@ -113,6 +114,7 @@ void loop()
        if(wifi.isConnected())
        {
          mainpage.lastWiFi = true;
+         timedata.sinhroTimeData();
          //Serial.println(WiFi.localIP());
          // тут можно запускать InternetClien
          forecastResponse.updateForecast();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
@@ -156,20 +158,28 @@ void loop()
        }
       }*/
 
-      /*if(millis() - lastRead >= interval)       // Время Дата
+      if(millis() - timedata.lastRead >= 1000)           // Время Дата
       {
-        lastRead = millis();                      // Время Дата
-        DateTime now = rtc.now();                 // Время Дата
-
-        if(now.minute() != lastMinute )           // Время Дата
+        timedata.lastRead = millis();                      // Время Дата
+        DateTime now = rtc.now();                          // Время Дата
+        if(mainpage.dayOfWeek != now.dayOfTheWeek())
         {
-          lastMinute = now.minute();              // Время дата
-
-          drawTimeData(now.hour(), now.minute()); // Время Дата
+        mainpage.dayOfWeek = now.dayOfTheWeek();
         }
-      }*/
-
         
+
+        if(now.minute() != timedata.lastMinute)           // Время Дата
+        {
+
+          timedata.lastMinute = now.minute();
+          mainpage.minutes = now.minute();              // Время дата
+          mainpage.hours =  now.hour();
+          Serial.println(String(mainpage.minutes));
+        // mainpage.updateTime(); // Время Дата
+        }
+      }
+
+       // Serial.println(String(millis()));
        //esp_task_wdt_reset(); // WatchDog
 
        

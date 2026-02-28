@@ -33,7 +33,8 @@ class MainPage : public Page
     TFT_eSprite sprTimeHour;
     TFT_eSprite sprTimeMinutes;
     TFT_eSprite sprWiFi;
-    TFT_eSprite sprData;
+    TFT_eSprite sprDayWeek;
+    
     
     public:
     int lastTemp = 0;
@@ -43,8 +44,7 @@ class MainPage : public Page
     int lastBaterry = 0;
     int lastData;
     int lastPecent;
-    int hours = 66;
-    int minutes = 88;
+    
     bool lastWiFi = false;
 
     // dataresiver& data // ссылка на структуру данных, которую беру из класса Datareciver
@@ -54,6 +54,12 @@ class MainPage : public Page
     void displayTime();
     void drawStatic() override;
     void updateDinamic() override;
+    int hours = 66;
+    int minutes = 88;
+    uint8_t dayOfWeek = 0;
+    String returnDay(uint8_t dayOfWeek);
+    void drawTimeData(int hours, int minutes);
+    
     
 
     private:
@@ -64,7 +70,7 @@ class MainPage : public Page
     void updateBaterry();
     void updateTime();
     void updateWiFi();
-    void updateData(String dateStr);
+    void updateDayWeek();
     void drawVline(int32_t x0, int32_t y0, int32_t visota, int32_t color, int repit);
     void drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color, int repit);  
 

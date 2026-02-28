@@ -17,11 +17,13 @@ extern uint16_t tY;
 extern TouchState structtouch;
 
 extern void getTouchXY(int& x, int& y);
+extern int hours;
+extern int minute;
 
 MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTimeHour(&display), sprTimeMinutes(&display),
- sprWiFi(&display), sprData(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
+ sprWiFi(&display), sprDayWeek(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
   btn_forecast(0, 0, 160, 70), btn_settings(0, 70, 160, 70),
    btn_currencypage(0, 140, 160, 70)
  {
@@ -44,6 +46,22 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
  }
 }
 
+String MainPage::returnDay(uint8_t dayOfWeek)
+{
+  switch(this->dayOfWeek)
+  {
+     case 0 : return "SUNDAY"; break;
+     case 1 : return "MONDAY"; break;
+     case 2 : return "TUESDAY"; break;
+     case 3 : return "WEDNESDAY"; break;
+     case 4 : return "THURSDAY"; break;
+     case 5 : return "FRIDAY"; break;
+     case 6 : return "SATURDAY"; break;
+     default : return "--------"; break;
+  }
+
+}
+
  
  void MainPage::drawStatic() 
  {
@@ -63,7 +81,7 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день
   sprBaterry.createSprite(38, 11); // индикатор батареи в своих размерах
   
-  sprData.createSprite(150, 40);
+  
 
   tft.setTextDatum(MC_DATUM); // центр по оси Х И по оси Y
   tft.setTextColor(TFT_BLACK);
@@ -90,31 +108,18 @@ void MainPage::drawHLine(int32_t x0, int32_t y0, int32_t chirina, int32_t color,
   sprBaterry.pushSprite(171, 6); // индикатор батареи на своем месте
   
   
-  sprData.pushSprite(166, 180);
-
-    //sprTemp.createSprite(100, 50);
-    //sprTemp.fillSprite(TFT_DARKGREY);
-    //sprTemp.setTextColor(TFT_BLACK);
-    //sprTemp.setTextDatum(TC_DATUM);
-    //sprTemp.drawString(String(lastTemp), 50, 0, 7);
-   // sprTemp.pushSprite(190, 260);
   
-
-    //sprHumidity.createSprite(100, 50);
-    //sprHumidity.fillSprite(TFT_DARKGREY);
-    //sprHumidity.setTextColor(TFT_BLACK);
-    //sprHumidity.setTextDatum(TC_DATUM);
-    //sprHumidity.drawString(String(lastHumidity), 50, 0, 7);
-    //sprHumidity.pushSprite(350, 260);
     
+}
 
-        //sprPressure.createSprite(100, 50);
-        //sprPressure.fillSprite(TFT_DARKGREY);
-        //sprPressure.setTextColor(TFT_BLACK);
-       // sprPressure.setTextDatum(TC_DATUM);
-       // sprPressure.drawString(String(lastPressure), 50, 0, 7);
-       // sprPressure.pushSprite(30, 260);
-      
+void MainPage::updateDayWeek()
+{  
+   sprDayWeek.createSprite(150, 40);
+   sprDayWeek.fillSprite(TFT_DARKGREY);
+   sprDayWeek.setTextColor(TFT_BLACK);
+   sprDayWeek.setTextDatum(MC_DATUM);
+   sprDayWeek.drawString((this->returnDay(this->dayOfWeek)), 75, 25, 4); //(this->returnDay(this->dayOfWeek)
+   sprDayWeek.pushSprite(166, 180);
 }
 
 void MainPage::updateTemp()
@@ -134,7 +139,7 @@ void MainPage::updateTemp()
 
 void MainPage::updateHumidity()
 {
-  if(true)//sensorData.humidity!= lastHumidity
+  if(true)
   {
     sprHumidity.createSprite(100, 50);
     sprHumidity.fillSprite(TFT_DARKGREY);
@@ -189,14 +194,14 @@ void MainPage::updateTime()
     sprTimeHour.fillSprite(TFT_DARKGREY);
     sprTimeHour.setTextColor(TFT_BLACK);
     sprTimeHour.setTextDatum(MC_DATUM);
-    sprTimeHour.drawString(String(hours), 28, 25, 6);
+    sprTimeHour.drawString((hours < 10 ? "0" : "") + String(hours), 28, 25, 6);
     sprTimeHour.pushSprite(336, 180);
 
-    sprTimeMinutes.createSprite(56 , 40);
+    sprTimeMinutes.createSprite(56, 40);
     sprTimeMinutes.fillSprite(TFT_DARKGREY);
     sprTimeMinutes.setTextColor(TFT_BLACK);
     sprTimeMinutes.setTextDatum(MC_DATUM);
-    sprTimeMinutes.drawString(String(minutes), 28, 25, 6);
+    sprTimeMinutes.drawString((minutes < 10 ? "0": "") + String(minutes), 28, 25, 6);
     sprTimeMinutes.pushSprite(416, 180);
 }
 
@@ -220,6 +225,7 @@ void MainPage::updateWiFi()
      updateHumidity();
      updateTemp();
      updateWiFi();
+     updateDayWeek();
      
      //updateBaterry();
   
@@ -246,7 +252,7 @@ void MainPage::updateWiFi()
 }
 
  
-    
+ 
     
 
    

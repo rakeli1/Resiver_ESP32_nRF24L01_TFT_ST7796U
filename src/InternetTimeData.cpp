@@ -16,7 +16,7 @@ void InternetTimeData::sinhroTimeData()
     {
       case TIME_INIT : 
       {
-        configTime(2*3660, 0, serverTimeData1.c_str(), serverTimeData2.c_str());
+        configTime(2*3600, 3600, serverTimeData1.c_str(), serverTimeData2.c_str());
         timeState = TIME_REQUEST;
       }
       break;
@@ -28,15 +28,19 @@ void InternetTimeData::sinhroTimeData()
       }
         break;
       case TIME_SYNCED :
-            rtc.adjust(DateTime(
+            rtcInclass.adjust(DateTime(
             timeinfoclass.tm_year + 1900, 
             timeinfoclass.tm_mon + 1,
             timeinfoclass.tm_mday,
             timeinfoclass.tm_hour,
             timeinfoclass.tm_min,
             timeinfoclass.tm_sec
+            
         ));
-        //now = rtc.now();
+        timeState = TIME_IDLE;
+        Serial.println("TIME SINCHED!!!");
+       // Serial.println(String(timeinfoclass.tm_min));
+        // rtcInclass.;
         // Время синхронизировано можно периодически проверять можно периодически обновлять через millis()
         break;
       }
