@@ -16,6 +16,7 @@
 #include "DataResiver.h"
 #include "InternetTimeData.h"
 #include <RTClib.h>
+#include "InternetCurrency.h"
 
 #define CE_PIN  26
 #define CSN_PIN 27
@@ -49,13 +50,14 @@ RadioData radiodata (radio, paket);
 String forecastRequest = "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
 String timeDataRequest1 = "time.ntp.org.ua";
 String timeDataRequest2 = "pool.ntp.org.ua";
-String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20250901";
+String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260306";
 
 TouchState structtouch;
 PageManager manager;
 InternetForecast forecastResponse(forecastRequest);
+InternetCurrency currency(currencyRequest);
 InternetTimeData timedata(timeDataRequest1, timeDataRequest2, rtc);
-DataResiver dataresiver(forecastResponse);   // InternetClient должен быть создан раньше чем DataResiver
+DataResiver dataresiver(forecastResponse, currency);   // InternetClient должен быть создан раньше чем DataResiver
 
 
 MainPage mainpage(tft, paket, radiodata, manager);
@@ -66,7 +68,7 @@ CurrencyPage currencypage(tft);
 
 
               
-String globResponse;
+String globResponseBank;
 
 void setup() 
 { 
@@ -104,8 +106,9 @@ void setup()
   
   manager.setPage(&mainpage);
   
+  
 }  
-//int serialiter = 0;
+int serialiter = 0;
 void loop() 
 {   
   
@@ -114,21 +117,15 @@ void loop()
        if(wifi.isConnected())
        {
          mainpage.lastWiFi = true;
-         timedata.sinhroTimeData();
-         //Serial.println(WiFi.localIP());
-         // тут можно запускать InternetClien
+         timedata.sinhroTimeData();  // Синхронизация должна делаться единожды!!!!!!!!!!
+
+         currency.updateCurrency();        // Запрос на сервер !!!!!! НАДО ДЕЛАТЬ ЕДИНОЖДЫ!!!!!!
          forecastResponse.updateForecast();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
+
          if ((forecastResponse.doc["cod"] == "200") && dataresiver.iteracia < 39)
           {
-         //globResponse = forecastResponse.response;
-         //Serial.println(globResponse);
-           dataresiver.parseForecastFromJsonDoc(forecastResponse.getDoc(), dataresiver.forecastarray);
-          
+            dataresiver.parseForecastFromJsonDoc(forecastResponse.getDoc(), dataresiver.forecastarray);
           }
-         
-         
-         //Serial.println(globResponse);
-
        } else
        {
          mainpage.lastWiFi = false;
@@ -158,31 +155,33 @@ void loop()
        }
       }*/
 
-      if(millis() - timedata.lastRead >= 1000)           // Время Дата
+      if(millis() - timedata.lastRead >= 1000)             // Время Дата
       {
         timedata.lastRead = millis();                      // Время Дата
         DateTime now = rtc.now();                          // Время Дата
+         
         if(mainpage.dayOfWeek != now.dayOfTheWeek())
         {
-        mainpage.dayOfWeek = now.dayOfTheWeek();
+           mainpage.dayOfWeek = now.dayOfTheWeek();        // день недели
         }
         
 
-        if(now.minute() != timedata.lastMinute)           // Время Дата
+        if(now.minute() != timedata.lastMinute)            // Время Дата
         {
-
-          timedata.lastMinute = now.minute();
-          mainpage.minutes = now.minute();              // Время дата
+          timedata.lastMinute = now.minute();             
+          mainpage.minutes = now.minute();                 // Время дата
           mainpage.hours =  now.hour();
-          Serial.println(String(mainpage.minutes));
-        // mainpage.updateTime(); // Время Дата
         }
       }
 
        // Serial.println(String(millis()));
        //esp_task_wdt_reset(); // WatchDog
 
-       
-    
+       if(serialiter == 40)
+       {
+       Serial.println(currency.responseBank);
+       dataresiver.parseCurrencyFromJsonDoc(currency.getDocBank(), dataresiver.currencyarray);
+       }
+      serialiter++;     
 } 
 

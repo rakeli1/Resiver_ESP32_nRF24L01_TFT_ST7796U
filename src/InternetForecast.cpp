@@ -9,7 +9,7 @@ InternetForecast::InternetForecast(String _serverUrl ) : serverUrl(_serverUrl)
    
 }
 
-//InternetClient::InternetClient()//Доработать!!!!!!!!1
+//InternetClient::InternetClient()//Доработать!!!!!!!!
 //{
 
 //}
@@ -43,7 +43,7 @@ InternetForecast::InternetForecast(String _serverUrl ) : serverUrl(_serverUrl)
             Serial.println(err.c_str());
           }
           state = DONE;
-          Serial.println("REQUEST");
+         // Serial.println("REQUEST");
           }else
           {
           state = ERROR;

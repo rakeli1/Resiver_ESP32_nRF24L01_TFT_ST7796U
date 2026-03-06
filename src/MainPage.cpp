@@ -17,8 +17,8 @@ extern uint16_t tY;
 extern TouchState structtouch;
 
 extern void getTouchXY(int& x, int& y);
-extern int hours;
-extern int minute;
+//extern int hours;
+//extern int minute;
 
 MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radiodata, PageManager& _manager) : 
 tft(display),sprTemp(&display),sprHumidity(&display),
@@ -73,9 +73,9 @@ String MainPage::returnDay(uint8_t dayOfWeek)
   drawHLine(0, 70, 480, TFT_WHITE, 2);
   drawHLine(0, 145, 160, TFT_WHITE, 2);
   
-  tft.fillRect(0, 0, 20, 20, TFT_BLUE);  // ориентир setRotation()
+ // tft.fillRect(0, 0, 20, 20, TFT_BLUE);  // ориентир setRotation()
   tft.drawRect(170, 5, 40, 13, TFT_WHITE ); // индикатор батареи
-  tft.fillCircle(240, 125, 20, TFT_YELLOW);
+ // tft.fillCircle(240, 125, 20, TFT_YELLOW);
 
   
   sprIcon.createSprite(64, 64);    // спрайт иконки погоды на текущий день

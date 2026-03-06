@@ -551,15 +551,15 @@ void ForecastPage::drawStatic()
   tft.fillScreen(TFT_DARKGREY);
   tft.fillRect(0, 0, 239, 39, TFT_RED);
 
-  drawHLine(0, 40, 480, TFT_WHITE, 1);
-  drawHLine(0, 80, 480, TFT_WHITE, 1); 
-  drawHLine(0, 140, 480, TFT_WHITE, 1);
-  drawHLine(0, 200, 480, TFT_WHITE, 1);
-  drawHLine(0, 260, 480, TFT_WHITE, 1);
-  drawHLine(96, 110, 370, TFT_WHITE, 1);
-  drawHLine(96, 170, 370, TFT_WHITE, 1);
-  drawHLine(96, 230, 370, TFT_WHITE, 1);
-  drawHLine(96, 290, 370, TFT_WHITE, 1);
+  drawHLine(0, 39, 480, TFT_BLACK, 1);
+  drawHLine(0, 80, 480, TFT_BLACK, 1); 
+  drawHLine(0, 140, 480, TFT_BLACK, 1);
+  drawHLine(0, 200, 480, TFT_BLACK, 1);
+  drawHLine(0, 260, 480, TFT_BLACK, 1);
+  //drawHLine(96, 110, 370, TFT_WHITE, 1);
+  //drawHLine(96, 170, 370, TFT_WHITE, 1);
+  //drawHLine(96, 230, 370, TFT_WHITE, 1);
+  //drawHLine(96, 290, 370, TFT_WHITE, 1);
 
   //float data = 45.85;          // debug
   tft.setTextDatum(MC_DATUM);
@@ -573,12 +573,12 @@ void ForecastPage::drawStatic()
   tft.drawString("Evening", 47, 290, 4);
   
 
-  drawVLine(96, 40, 280, TFT_WHITE, 1);
-  drawVLine(160, 40, 280, TFT_WHITE, 1);
-  drawVLine(224, 40, 280, TFT_WHITE, 1);
-  drawVLine(288, 40, 280, TFT_WHITE, 1);
-  drawVLine(352, 40, 280, TFT_WHITE, 1);
-  drawVLine(416, 40, 280, TFT_WHITE, 1);
+  drawVLine( 96, 40, 280, TFT_BLACK, 1);
+  drawVLine(160, 40, 280, TFT_BLACK, 1);
+  drawVLine(224, 40, 280, TFT_BLACK, 1);
+  drawVLine(288, 40, 280, TFT_BLACK, 1);
+  drawVLine(352, 40, 280, TFT_BLACK, 1);
+  drawVLine(416, 40, 280, TFT_BLACK, 1);
 
   updateAllCells(dataresiver);
 

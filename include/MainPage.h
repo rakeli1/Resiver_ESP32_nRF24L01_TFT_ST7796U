@@ -54,13 +54,13 @@ class MainPage : public Page
     void displayTime();
     void drawStatic() override;
     void updateDinamic() override;
-    int hours = 66;
-    int minutes = 88;
+    int hours = 0;
+    int minutes = 0;
     uint8_t dayOfWeek = 0;
-    String returnDay(uint8_t dayOfWeek);
+    String returnDay(uint8_t dayOfWeek); 
     void drawTimeData(int hours, int minutes);
     
-    
+       
 
     private:
     void updateTemp();

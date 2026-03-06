@@ -3,8 +3,8 @@
 #include "InternetForecast.h"
 #include "InternetTimeData.h"
 
-DataResiver::DataResiver(InternetForecast& _client1) : client1(_client1)
-                         
+DataResiver::DataResiver(InternetForecast& _clientforecast, InternetCurrency& _clientcurrency) : clientforecast(_clientforecast),
+                         clientcurrency(_clientcurrency)
                          
 {
  
@@ -596,4 +596,50 @@ void DataResiver::parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* for
         indexdata++;
      }
    }
+}
+
+void DataResiver::parseCurrencyFromJsonDoc(JsonDocument& docBank, CurrencyPoint* currencyarray)
+{
+   JsonArray arr = docBank.as<JsonArray>();
+   //Serial.print("Количество влютных точек");
+  // Serial.println(arr.size());
+  for(int i = 0; i < 45; i++)
+  {
+    JsonObject obj = arr[i];
+    currencyarray[i].cc = obj["cc"];
+    currencyarray[i].rate = obj["rate"];
+    currencyarray[i].data = obj["exchangedate"];
+
+    if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "USD"))currencyarray[i].currenciid = USD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "JPY"))currencyarray[i].currenciid = JPY; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "GBP"))currencyarray[i].currenciid = GBP;
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "CAD"))currencyarray[i].currenciid = CAD;  
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "NZD"))currencyarray[i].currenciid = NZD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "NOK"))currencyarray[i].currenciid = NOK; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "AUD"))currencyarray[i].currenciid = AUD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "CHF"))currencyarray[i].currenciid = CHF; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "ILS"))currencyarray[i].currenciid = ILS; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "SAR"))currencyarray[i].currenciid = SAR_; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "XAG"))currencyarray[i].currenciid = XAG; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "XAU"))currencyarray[i].currenciid = XAU; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "XPT"))currencyarray[i].currenciid = XPT; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "XPD"))currencyarray[i].currenciid = XPD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "HKD"))currencyarray[i].currenciid = HKD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "SGD"))currencyarray[i].currenciid = SGD; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "MDL"))currencyarray[i].currenciid = MDL; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "MXN"))currencyarray[i].currenciid = MXN; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "TRY"))currencyarray[i].currenciid = TRY; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "EUR"))currencyarray[i].currenciid = EUR; 
+    else if(currencyarray[i].cc && strcmp(currencyarray[i].cc, "SEK"))currencyarray[i].currenciid = SEK; 
+    else currencyarray[i].currenciid = CURRENCYZERO;
+
+   
+
+    //Serial.print(currencyarray[i].cc);
+    //Serial.print(" :");
+    //Serial.println(String(currencyarray[i].rate));
+    //Serial.println(currencyarray[i].data);
+    //Serial.println(" ");
+    //delay(1000);
+  }
 }

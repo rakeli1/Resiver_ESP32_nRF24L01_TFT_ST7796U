@@ -29,7 +29,7 @@ void InternetTimeData::sinhroTimeData()
         break;
       case TIME_SYNCED :
             rtcInclass.adjust(DateTime(
-            timeinfoclass.tm_year + 1900, 
+            timeinfoclass.tm_year + 1900,    
             timeinfoclass.tm_mon + 1,
             timeinfoclass.tm_mday,
             timeinfoclass.tm_hour,

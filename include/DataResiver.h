@@ -5,50 +5,15 @@
 #include <ArduinoJson.h>
 #include "TFT_eSPI.h"
 #include "InternetTimeData.h"
+#include "InternetCurrency.h"
+#include "FileServises.h"
 #define FORECAST_POINTS 40
+#define CURRENCY_POINTS 45
 
 extern TFT_eSPI tft;
 
-enum ParthDayID
-{  
-   DATA1,
-   NIGHT1,  
-   MORNING1,
-   DAY1,
-   EVENING1,
-   DATAZERO1,
-   NIGHTZERO1,
-   MORNINGZERO1,
-   DAYZERO1,
-   EVENINGZERO1,
-   DATA2,
-   NIGHT2,  
-   MORNING2,
-   DAY2,
-   EVENING2,
-   DATA3,
-   NIGHT3,  
-   MORNING3,
-   DAY3,
-   EVENING3,
-   DATA4,
-   NIGHT4,  
-   MORNING4,
-   DAY4,
-   EVENING4,
-   DATA5,
-   NIGHT5,  
-   MORNING5,
-   DAY5,
-   EVENING5,
-   DATA6,
-   NIGHT6,  
-   MORNING6,
-   DAY6,
-   EVENING6,
-   PARTHZERO,
 
-};
+
 
 
 
@@ -83,12 +48,22 @@ struct ForecastPoint
 };
 
 
+ 
+
+ struct CurrencyPoint
+{
+   float rate = 0.00;
+   const char* cc = "---";
+   const char* data;
+   CurrencyId currenciid = CURRENCYZERO;
+};
+
 
 class DataResiver
 {
     private:
-    InternetForecast& client1;
-    
+    InternetForecast& clientforecast;
+    InternetCurrency& clientcurrency;
     
 
     //----------- 0 точка-------------
@@ -334,14 +309,14 @@ class DataResiver
 
 
     public:
-     DataResiver(InternetForecast& _client1);
-     ForecastPoint forecastarray[46]; // массив структур хранящих точки прогноза с параметрами для отображения на дисплее
-     int dataForecast[6] {0};                      // массив хранящий даты дней и их количество полученное с сайта openweathermap
+     DataResiver(InternetForecast& _clientforecast, InternetCurrency& _clientcurrency);
+     ForecastPoint forecastarray[46]; // массив структур хранящий точки прогноза с параметрами для отображения на дисплее
+     CurrencyPoint currencyarray[45]; // массив структур хранящий точки валюты с параметрами для отображения и идентификации
+     int dataForecast[6] {0};         // массив хранящий даты дней и их количество полученное с сайта openweathermap
      int iteracia = 0;                     
      WeatherType parseWeatherType(const char* weather);
      void parseForecastFromJsonDoc(JsonDocument& doc, ForecastPoint* forecastarray);// парсинг данных из JSON файла полученного с сервера погоды
-    
-     
+     void parseCurrencyFromJsonDoc(JsonDocument& docBank, CurrencyPoint* currencyarray); // парсинг данных валют полученых с сервера банка НБУ
      
      
 };

@@ -5,16 +5,10 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include "RTClib.h"
+#include "FileServises.h"
 
 
-enum NetState
-{
-   IDLE,         // готовимся к запросу
-   CONNECTING,      // начинаем соединение
-   WAIT_RESPONSE,  //ждем собраного ответа
-   DONE,         // данные готовы, можно передать UI
-   ERROR         // ошибка можно повторить
-};
+
 
 
 
@@ -27,7 +21,7 @@ class InternetForecast
     
     String serverUrl;        
     HTTPClient http;
-    
+   
     
 
   
@@ -35,17 +29,14 @@ class InternetForecast
 
    public:
      JsonDocument doc;                        // распарсеный документ прогноза погоды
+      NetState state = IDLE;
      
-     
-     NetState state = IDLE;      // прогноз погоды
+           // прогноз погоды
      bool requestStarted = true; // прогноз погоды
      String response;            // ответ с сервера прогноз погоды
-     InternetForecast(String _serverUrl);
-    // InternetClient();                 
-     void updateForecast();
-     //void updateTimeData(); 
+     InternetForecast(String _serverUrl);                 
+     void updateForecast(); 
      JsonDocument &getDoc();       // прогноз погоды
-    // DateTime &getDateTime();    // дата и время
      
             
 
