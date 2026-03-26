@@ -23,6 +23,7 @@ void WiFiManager::update()
         break;
 
     case WiFiState::START :
+    WiFi.disconnect();
     WiFi.begin(_ssid, _password);
     _ts = millis();
     _state = WiFiState::CONNECTING;

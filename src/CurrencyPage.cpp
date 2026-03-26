@@ -1,9 +1,10 @@
 #include "CurrencyPage.h"
 #include "MainPage.h"
+#include "TFT_eSPI.h"
 
 extern TouchState structtouch;
 
-CurrencyPage::CurrencyPage(TFT_eSPI& tft) : tft(tft), btn_exit_CurrencyPage(160, 280, 160, 40)
+CurrencyPage::CurrencyPage(TFT_eSPI& tft, DataResiver& _dataresiver) : tft(tft), dataresiver(_dataresiver), btn_exit_CurrencyPage(160, 280, 160, 40)
 {
 
 }
@@ -22,6 +23,152 @@ void CurrencyPage::drawcarr_VLine(int32_t x0, int32_t y0, int32_t visota, int32_
  {
   tft.drawFastVLine(x0 + i, y0, visota, color);
  }
+}
+
+void CurrencyPage::upDateAllcellcarrency(DataResiver& dataresiver)
+{
+   for(int i = 0; i < 45; i++)
+   {
+      switch(dataresiver.currencyarray[i].currenciid)
+      {
+        case USD : usd.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case CAD : cad.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case GBP : gbp.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case AUD : aud.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case NZD : nzd.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case EUR : eur.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case CHF : chf.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case JPY : jpy.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case SGD : sgd.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case HKD : hkd.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case SEK : sek.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case SAR_ : sar_.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case TRY : try_.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case NOK : nok.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case MDL : mdl.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case MXN : mxn.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case ILS : ils.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case XAG : xag.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case XPT : xpt.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case XPD : xpd.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case XAU : xau.cellcurrency_rate = dataresiver.currencyarray[i].rate; break;
+        case CURRENCYZERO : break;
+      }
+   }
+}
+
+void CurrencyPage::CellCurrency::cellCurrencyDraw(TFT_eSPI& tft)
+{
+   switch(idCurrency)
+   {  
+      case CAD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 63, 4);
+      break;
+
+      case USD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 23, 4);
+      break;
+
+      case GBP : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 103, 4);
+      break;
+
+      case AUD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 143, 4);
+      break;
+
+      case NZD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 183, 4);
+      break;
+
+      case EUR : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 223, 4);
+      break;
+
+      case CHF : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 263, 4);
+      break;
+
+      case JPY : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 120, 303, 4);
+      break;
+
+      case SGD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 280, 103, 4);
+      break;
+
+      case HKD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 280, 143, 4);
+      break;
+
+      case SEK : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 280, 183, 4);
+      break;
+
+      case SAR_ : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 280, 223, 4);
+      break;
+
+      case TRY : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 280, 263, 4);
+      break;
+
+      case NOK : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 23, 4);
+      break;
+
+      case MDL : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 63, 4);
+      break;
+
+      case MXN : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 103, 4);
+      break;
+
+      case ILS : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 143, 4);
+      break;
+
+      case XAG : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 183, 4);
+      break;
+
+      case XPT : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 223, 4);
+      break;
+
+      case XPD : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 263, 4);
+      break;
+
+      case XAU : tft.setTextDatum(MC_DATUM);
+                 tft.setTextColor(TFT_BLACK);
+                 tft.drawString(String(cellcurrency_rate), 440, 303, 4);
+      break;
+
+      case CURRENCYZERO : break;
+
+   }
 }
 
 void CurrencyPage::drawStatic()
@@ -70,7 +217,30 @@ void CurrencyPage::drawStatic()
 
    tft.fillRect(163, 283, 157, 37, TFT_RED);
    tft.drawString("EXIT", 240, 305);
+   upDateAllcellcarrency(dataresiver);
+   usd.cellCurrencyDraw(tft);
+   cad.cellCurrencyDraw(tft);
+   gbp.cellCurrencyDraw(tft);
+   aud.cellCurrencyDraw(tft);
+   nzd.cellCurrencyDraw(tft);
+   eur.cellCurrencyDraw(tft);
+   chf.cellCurrencyDraw(tft);
+   jpy.cellCurrencyDraw(tft);
+   sgd.cellCurrencyDraw(tft);
+   hkd.cellCurrencyDraw(tft);
+   sek.cellCurrencyDraw(tft);
+   sar_.cellCurrencyDraw(tft);
+   try_.cellCurrencyDraw(tft);
+   nok.cellCurrencyDraw(tft);
+   mdl.cellCurrencyDraw(tft);
+   mxn.cellCurrencyDraw(tft);
+   ils.cellCurrencyDraw(tft);
+   xag.cellCurrencyDraw(tft);
+   xpt.cellCurrencyDraw(tft);
+   xpd.cellCurrencyDraw(tft);
+   xau.cellCurrencyDraw(tft);
 }
+
 
 void CurrencyPage::updateDinamic()
 {
@@ -78,5 +248,8 @@ void CurrencyPage::updateDinamic()
   {
     manager.setPage(&mainpage);
     structtouch.pressed = false;
+    //structtouch.x = -1;
+    //structtouch.y = -1;
+
   }
 }

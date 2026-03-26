@@ -16,7 +16,9 @@ void InternetTimeData::sinhroTimeData()
     {
       case TIME_INIT : 
       {
-        configTime(2*3600, 3600, serverTimeData1.c_str(), serverTimeData2.c_str());
+        configTime(7200, 0, serverTimeData1.c_str(), serverTimeData2.c_str());
+        //setenv("TZ", "EET-2EEST,M3.5.0/3,M10.5.0/4", 1);
+        //tzset();
         timeState = TIME_REQUEST;
       }
       break;

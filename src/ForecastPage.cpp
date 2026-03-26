@@ -621,7 +621,10 @@ void ForecastPage::updateDinamic()
    if(btn_exit.isTouched())
    {  
       structtouch.pressed = false;
+      
+      
       manager.setPage(&mainpage);
+      
    } 
 }
 

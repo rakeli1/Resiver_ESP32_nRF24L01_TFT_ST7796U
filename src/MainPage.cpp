@@ -234,16 +234,25 @@ void MainPage::updateWiFi()
     {
       if(btn_forecast.isTouched())
       { 
+        //structtouch.pressed = false;
+        //structtouch.x = -1;
+        //structtouch.y = -1;
          manager.setPage(&forecastpage);
       }
 
       if(btn_settings.isTouched())
       {
+        //structtouch.pressed = false;
+       // structtouch.x = -1;
+        //structtouch.y = -1;
         manager.setPage(&settingpage);
       }
 
       if(btn_currencypage.isTouched())
-      {
+      { 
+        //structtouch.pressed = false;
+        //structtouch.x = -1;
+        //structtouch.y = -1;
         manager.setPage(&currencypage);
       }
       //Serial.println("Enter MainPage upDate Dinamicccccccccccccccc");

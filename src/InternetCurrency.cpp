@@ -28,7 +28,7 @@ void InternetCurrency::updateCurrency()
         httpc.addHeader("Connection", "close");       //  раскомментировать при запросе в банк      
         httpc.setTimeout(5000);                       // раскоментировать при запросе в банк
         httpc.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);//раскомментировать при запросе в банк!
-        configTime(7200, 3600, "pool.ntp.org", "time.nist.gov");
+       // configTime(7200, 3600, "pool.ntp.org", "time.nist.gov");
         Serial.println("CONNECTING"); // отладка!!!!!!!!!!!!!!!!
         stateBank = WAIT_RESPONSE;
        break;

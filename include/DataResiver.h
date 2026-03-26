@@ -56,7 +56,7 @@ struct ForecastPoint
    const char* cc = "---";
    const char* data;
    CurrencyId currenciid = CURRENCYZERO;
-};
+}; 
 
 
 class DataResiver

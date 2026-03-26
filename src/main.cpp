@@ -28,6 +28,7 @@ byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"};
 TFT_eSPI tft = TFT_eSPI();
 WiFiManager wifi("TP-Link_C810","91891518");
 FT6336U gl_touch(5, 34);
+bool prevTouch = false; // предыдущее состояние тача
 uint16_t tX = -1;
 uint16_t tY = -1;
 
@@ -47,10 +48,10 @@ void getTouchXY(uint16_t& x, uint16_t& y) //функция согласлвую�
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
 RadioData radiodata (radio, paket);
 
-String forecastRequest = "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
+String forecastRequest =  "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
 String timeDataRequest1 = "time.ntp.org.ua";
 String timeDataRequest2 = "pool.ntp.org.ua";
-String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260306";
+String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260315";
 
 TouchState structtouch;
 PageManager manager;
@@ -63,7 +64,7 @@ DataResiver dataresiver(forecastResponse, currency);   // InternetClient дол�
 MainPage mainpage(tft, paket, radiodata, manager);
 ForecastPage forecastpage(tft, dataresiver);
 SettingPage settingpage(tft);
-CurrencyPage currencypage(tft);
+CurrencyPage currencypage(tft, dataresiver);
 
 
 
@@ -118,6 +119,11 @@ void loop()
        {
          mainpage.lastWiFi = true;
          timedata.sinhroTimeData();  // Синхронизация должна делаться единожды!!!!!!!!!!
+        if(serialiter == 40)
+        {
+        Serial.println(currency.responseBank); // отладка закоментить после отладки
+        dataresiver.parseCurrencyFromJsonDoc(currency.getDocBank(), dataresiver.currencyarray);
+        } 
 
          currency.updateCurrency();        // Запрос на сервер !!!!!! НАДО ДЕЛАТЬ ЕДИНОЖДЫ!!!!!!
          forecastResponse.updateForecast();//Запрос на сервер!!!!!! НАДО СДЕЛАТЬ ЧТОБЫ ЗАПРОС ДЕЛАЛСЯ ЕДИНОЖДЫ!!!!!!!!
@@ -131,11 +137,22 @@ void loop()
          mainpage.lastWiFi = false;
          Serial.println("WiFi disconnected!!!");
        }
-    
+
+      
+       
        getTouchXY(tX, tY);
        structtouch.pressed = true;
        structtouch.x = tX;
        structtouch.y = tY;
+      
+       // Serial.print("X = "); Serial.println(tX);
+       // Serial.print("Y = "); Serial.println(tY);
+      // structtouch.x = -1;
+       //structtouch.y = -1;
+       //structtouch.pressed = false;
+
+        
+       
       
        manager.update();
      /* if(dataresiver.iteracia == 39 && serialiter < 46)
@@ -176,12 +193,10 @@ void loop()
 
        // Serial.println(String(millis()));
        //esp_task_wdt_reset(); // WatchDog
-
-       if(serialiter == 40)
-       {
-       Serial.println(currency.responseBank);
-       dataresiver.parseCurrencyFromJsonDoc(currency.getDocBank(), dataresiver.currencyarray);
-       }
-      serialiter++;     
+       
+      serialiter++;  
+      
+      //Serial.println(structtouch.x);
+      //Serial.println(structtouch.y);
 } 
 

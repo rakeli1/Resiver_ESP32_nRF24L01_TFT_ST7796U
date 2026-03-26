@@ -25,7 +25,9 @@ bool Button::isTouched()
    
    if(structtouch.pressed)
    { 
+     //structtouch.pressed = false;
      return (tX >= btnx && tX <= btnx + btnw && tY >= btny && tY <= btny + btnh);
+     
    }else
    {
      return false;
