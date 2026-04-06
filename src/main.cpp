@@ -28,7 +28,7 @@ byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"};
 TFT_eSPI tft = TFT_eSPI();
 WiFiManager wifi("TP-Link_C810","91891518");
 FT6336U gl_touch(5, 34);
-bool prevTouch = false; // предыдущее состояние тача
+//bool prevTouch = false; // предыдущее состояние тача
 uint16_t tX = -1;
 uint16_t tY = -1;
 
@@ -51,7 +51,7 @@ RadioData radiodata (radio, paket);
 String forecastRequest =  "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
 String timeDataRequest1 = "time.ntp.org.ua";
 String timeDataRequest2 = "pool.ntp.org.ua";
-String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260315";
+String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260403";
 
 TouchState structtouch;
 PageManager manager;
@@ -139,38 +139,26 @@ void loop()
        }
 
       
-       
+      if(gl_touch.read_td_status() == 1) 
+      {
        getTouchXY(tX, tY);
        structtouch.pressed = true;
        structtouch.x = tX;
        structtouch.y = tY;
-      
-       // Serial.print("X = "); Serial.println(tX);
-       // Serial.print("Y = "); Serial.println(tY);
-      // structtouch.x = -1;
-       //structtouch.y = -1;
-       //structtouch.pressed = false;
+       Serial.println("Координаты X в касании :"); Serial.println(tX);
+       Serial.println("Координаты У в касании :"); Serial.println(tY);
+      }else
+      {
+        tX = 0;
+        tY = 0;
+        structtouch.x = tX;
+        structtouch.y = tY;
+        structtouch.pressed = false;
+      }
 
-        
-       
       
        manager.update();
-     /* if(dataresiver.iteracia == 39 && serialiter < 46)
-      {  
-       for(int iter = 0; iter < 46; iter++)
-       { 
-         Serial.print("serialiter = ");
-         Serial.println(serialiter);
-         Serial.println(dataresiver.forecastarray[iter].temperature);
-         Serial.println(dataresiver.forecastarray[iter].day);
-         Serial.println(dataresiver.forecastarray[iter].hour);
-         Serial.println(dataresiver.forecastarray[iter].parthdayID); 
-         Serial.println(dataresiver.forecastarray[iter].weathertype);
-         Serial.println("======================================");
-         serialiter++;
-         delay(1000);
-       }
-      }*/
+    
 
       if(millis() - timedata.lastRead >= 1000)             // Время Дата
       {
@@ -196,7 +184,6 @@ void loop()
        
       serialiter++;  
       
-      //Serial.println(structtouch.x);
-      //Serial.println(structtouch.y);
+      
 } 
 

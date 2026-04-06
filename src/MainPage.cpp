@@ -219,7 +219,6 @@ void MainPage::updateWiFi()
  void MainPage::updateDinamic()
 {  
      radiodata.upDate();
-     //sensorData = radiodata.getData();
      updateTime();
      updatePressure();
      updateHumidity();
@@ -230,35 +229,22 @@ void MainPage::updateWiFi()
      //updateBaterry();
   
     
-     if(structtouch.pressed)
-    {
-      if(btn_forecast.isTouched())
-      { 
-        //structtouch.pressed = false;
-        //structtouch.x = -1;
-        //structtouch.y = -1;
-         manager.setPage(&forecastpage);
-      }
-
-      if(btn_settings.isTouched())
+     // if(gl_touch.read_td_status()==1)
+    
+       if(btn_settings.isTouched())
       {
-        //structtouch.pressed = false;
-       // structtouch.x = -1;
-        //structtouch.y = -1;
-        manager.setPage(&settingpage);
-      }
-
-      if(btn_currencypage.isTouched())
+         manager.setPage(&settingpage);
+      }else if(btn_forecast.isTouched())
       { 
-        //structtouch.pressed = false;
-        //structtouch.x = -1;
-        //structtouch.y = -1;
+         manager.setPage(&forecastpage);
+      }else if(btn_currencypage.isTouched())
+      { 
         manager.setPage(&currencypage);
       }
       //Serial.println("Enter MainPage upDate Dinamicccccccccccccccc");
-    }
-      structtouch.pressed = false; 
 }
+      //structtouch.pressed = false; 
+    
 
  
  
