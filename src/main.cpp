@@ -358,7 +358,7 @@ CurrencyPage currencypage(tft, dataresiver);
 
 
 
-String globResponseBank = " ";             
+//String globResponseBank = " ";             
 String globResponseBank;
 
 void setup() 

@@ -17,7 +17,7 @@ extern RTC_DS3231 rtc;
 class MainPage : public Page
 {
  private:
-    TFT_eSPI&   tft;
+    TFT_eSPI   &tft;
     struc_radioPaket& sensorData;// структура данных в которую ложит данные класс RadioData
     RadioData& radiodata;
     PageManager& manager;
