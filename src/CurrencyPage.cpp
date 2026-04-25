@@ -4,7 +4,8 @@
 
 extern TouchState structtouch;
 
-CurrencyPage::CurrencyPage(TFT_eSPI& tft, DataResiver& _dataresiver) : tft(tft), dataresiver(_dataresiver), btn_exit_CurrencyPage(160, 280, 160, 40)
+CurrencyPage::CurrencyPage(TFT_eSPI& tft, DataResiver& _dataresiver) : tft(tft),
+ dataresiver(_dataresiver), btn_exit_CurrencyPage(160, 280, 160, 40, TFT_DARKGREY, true, true)
 {
 
 }

@@ -3,14 +3,19 @@
 #include "Button.h"
 #include "TFT_eSPI.h"
 #include "PageManager.h"
+#include "NetworkPage.h"
 
+class NetworkPage;
 extern PageManager manager;
+extern NetworkPage networkpage;
 
 class SettingPage : public Page
 {  
    private:
      Button btn_exit;
+     Button btn_network;
      TFT_eSPI& tft;
+     
     
 
    public:

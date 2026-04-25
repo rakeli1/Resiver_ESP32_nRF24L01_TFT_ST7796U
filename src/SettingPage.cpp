@@ -7,7 +7,8 @@ extern TouchState structtouch;
 extern bool currTouch;
 extern bool prevTouch;
 
-SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft), btn_exit(0, 240, 480, 80)
+SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft), btn_exit(0, 240, 480, 80, TFT_RED, true, true),
+                          btn_network(0, 160, 480, 80, TFT_DARKGREY, true, true)
 {
 
 }                                                                
@@ -59,5 +60,10 @@ void SettingPage::updateDinamic() // virtual
      manager.setPage(&mainpage);
     
      //structtouch.pressed = false;
+   }else if(btn_network.isTouched())
+   {
+     manager.setPage(&networkpage);
    }
+
+   Serial.println("Dinamik SEttingPage");
 }

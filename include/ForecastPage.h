@@ -67,7 +67,8 @@ class ForecastPage : public Page
    Cell cellEvening5 {0, 0, PARTHZERO, WEATHER_UNKNOWN};
    Cell cellEvening6 {0, 0, PARTHZERO, WEATHER_UNKNOWN};
    
-   ForecastPage(TFT_eSPI& _tft, DataResiver& _dataresiver) : tft(_tft), dataresiver(_dataresiver), btn_exit(0, 0, 239, 39)
+   ForecastPage(TFT_eSPI& _tft, DataResiver& _dataresiver) : 
+   tft(_tft), dataresiver(_dataresiver), btn_exit(0, 0, 239, 39, TFT_DARKGREY, true, true)
    {
 
    }

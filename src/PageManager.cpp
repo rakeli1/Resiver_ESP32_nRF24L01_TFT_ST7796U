@@ -21,7 +21,7 @@ void PageManager::update()
     }
 
     currentPage -> updateDinamic();
-    //Serial.println("UPDATEDINAMICPAGEMANAGER");
+    //Serial.println("UPDATEDINAMICPAGEMANAGER/////////////////////////////////////////////");
 }
 
 Page* PageManager::getCurrentPage() const

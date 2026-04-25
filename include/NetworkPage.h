@@ -5,9 +5,21 @@
 #include "PageManager.h"
 #include "Button.h"
 #include "SettingPage.h"
+#include <WiFi.h>
+#include "WiFiManager.h"
 
 extern uint16_t tX;
 extern uint16_t tY;
+//extern WiFiManager wifi;
+
+enum State
+{
+  WIFI_SCAN,
+  WIFI_LIST,
+  WIFI_PASSWORD,
+  WIFI_CONNECTING,
+  WIFI_RESULT
+};
 
 class NetworkPage : public Page
 {
@@ -89,13 +101,17 @@ Key key[64] = {{20, 60, 'a', 'A'},
                  {140, 260, '~', '~'},
     };
 
-int networks = 0;
+
 String ssidList[20];
 String selectedSSID = "";
 String inputBufer = "Zopa"; // Промежуточная переменная ввода пароля
 String password = "";       // Переменная для рароля
 bool passwordOk = false;    // Подтверждение ввода пароля
-bool shiftstate = false;    // Переключение между регистрами
+bool shiftstate = false;     // Переключение между регистрами 
+bool prevShiftstate = false;   // Переключение между регистрами
+int selektNetwork = -1;
+State state = WIFI_SCAN;
+State prevState = WIFI_RESULT;
 uint16_t &tX;              //              ВОПРОС!!!!!!!!!!!!!!!!
 uint16_t &tY;               //             ВОПРОС!!!!!!!!!!!!!!!!
 //void getTouchXY(uint16_t &tX, uint16_t &tY); ВОПРОС!!!!!!!!!!!!!!!!!
@@ -111,4 +127,20 @@ void addChar(char d);
   NetworkPage(TFT_eSPI &_tft, PageManager &manager, uint16_t &_tX, uint16_t &tY);
   void drawStatic() override;
   void updateDinamic() override;
+  void getTouchXY();
+  void drawWiFiList();
+  void scanWiFi();
+  void connectWiFi();
+  int checkTouch(); 
+  void update();
+  void onEnterState( State state);
+  void render();
+  bool justReleased();
+  Button btnNet_exit;
+  
+    
+  
+  
+  int networks = 0;
+  
 };

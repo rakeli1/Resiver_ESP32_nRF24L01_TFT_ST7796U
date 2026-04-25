@@ -24,8 +24,8 @@ MainPage::MainPage(TFT_eSPI& display, struc_radioPaket& paket, RadioData& _radio
 tft(display),sprTemp(&display),sprHumidity(&display),
  sprPressure(&display), sprIcon(&display), sprBaterry(&display), sprTimeHour(&display), sprTimeMinutes(&display),
  sprWiFi(&display), sprDayWeek(&display), sensorData(paket), radiodata(_radiodata), manager(_manager),
-  btn_forecast(0, 0, 160, 70), btn_settings(0, 70, 160, 70),
-   btn_currencypage(0, 140, 160, 70)
+  btn_forecast(0, 0, 160, 70, TFT_DARKGREY, true, true), btn_settings(0, 70, 160, 70, TFT_DARKGREY, true, true),
+   btn_currencypage(0, 140, 160, 70, TFT_DARKGREY, true, true)
  {
 
  }
@@ -85,6 +85,7 @@ String MainPage::returnDay(uint8_t dayOfWeek)
 
   tft.setTextDatum(MC_DATUM); // центр по оси Х И по оси Y
   tft.setTextColor(TFT_BLACK);
+  tft.setTextSize(1);///////////////////////////////////////////////////////////////УБРАТЬ!!!!
   tft.setTextFont(4);
   tft.drawString("Temperature", 240, 240);
   tft.drawString("Humidity", 400, 240);

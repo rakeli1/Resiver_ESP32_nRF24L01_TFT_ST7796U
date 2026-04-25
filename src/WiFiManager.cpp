@@ -1,8 +1,16 @@
 #include "WiFiManager.h"
 
-WiFiManager::WiFiManager(const char* ssid, const char* password) : _ssid(ssid), _password(password)
+WiFiManager::WiFiManager(String ssid, String password) :
+ _ssid(std::move(ssid)), _password(std::move(password))
 {
 
+}
+
+void WiFiManager::setCredentials(String _ssidUser, String _passwordUser)
+{
+    _ssid = _ssidUser;
+    _password = _passwordUser; 
+    needConnect = true;
 }
 
 void WiFiManager::begin()
@@ -23,10 +31,18 @@ void WiFiManager::update()
         break;
 
     case WiFiState::START :
+
+    if(needConnect)      // Добавлено после ... Если будут глюки - Обратить внимание
+    {
     WiFi.disconnect();
     WiFi.begin(_ssid, _password);
     _ts = millis();
     _state = WiFiState::CONNECTING;
+    needConnect = false;
+    }else
+    {
+        _state = WiFiState::RETRY;
+    }
     break;
 
     case WiFiState::CONNECTING :
@@ -52,7 +68,8 @@ void WiFiManager::update()
 
     case WiFiState::RETRY :
     if(millis() - _ts > RETRY_DELAY)
-    {
+    {    
+        needConnect = true;
         _state = WiFiState::START;
     }
     break;
