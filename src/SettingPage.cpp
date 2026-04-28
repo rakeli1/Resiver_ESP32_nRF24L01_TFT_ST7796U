@@ -2,13 +2,16 @@
 #include "SettingPage.h"
 #include "PageManager.h"
 #include "MainPage.h"
+#include "LocationPage.h"
 
 extern TouchState structtouch;
 extern bool currTouch;
 extern bool prevTouch;
 
-SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft), btn_exit(0, 240, 480, 80, TFT_RED, true, true),
-                          btn_network(0, 160, 480, 80, TFT_DARKGREY, true, true)
+SettingPage::SettingPage(TFT_eSPI&_tft) : tft(_tft),
+btn_exit(0, 240, 480, 80, TFT_RED, true, true),
+btn_network(0, 160, 480, 80, TFT_DARKGREY, true, true),
+btn_location(0, 80, 480, 80, TFT_DARKGREY, true, true)
 {
 
 }                                                                
@@ -45,6 +48,7 @@ void SettingPage::drawStatic() // virtual
    tft.setTextDatum(MC_DATUM);
    tft.setTextColor(TFT_BLACK);
    tft.setTextFont(4);
+   tft.setTextSize(1);
    tft.drawString("TIME & DATA", 240, 40);
    tft.drawString("LOCATION", 240, 120);
    tft.drawString("NETWORK", 240, 200);
@@ -63,6 +67,9 @@ void SettingPage::updateDinamic() // virtual
    }else if(btn_network.isTouched())
    {
      manager.setPage(&networkpage);
+   }else if(btn_location.isTouched())
+   {
+     manager.setPage(&locationpage);
    }
 
    Serial.println("Dinamik SEttingPage");

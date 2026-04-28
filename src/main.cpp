@@ -28,7 +28,7 @@ RF24 radio(CE_PIN,CSN_PIN);
 byte address[][6] = {"1Node", "2Node", "3Node", "4Node", "5Node", "6Node"}; 
 
 TFT_eSPI tft = TFT_eSPI();
-//WiFiManager wifi("TP-Link_C810","91891518");  Переделать при разном способе подключений
+WiFiManager wifi("TP-Link_C810","91891518");  //Переделать при разном способе подключений
 FT6336U gl_touch(5, 34);
 
 ///////////////////////////// ТАЧ и КЛАВИАТУРА ДИНАМИЧЕСКИЙ ВВОД    //////////////////
@@ -48,8 +48,10 @@ void getTouchXY(uint16_t& x, uint16_t& y) //функция согласовую�
 
 struc_radioPaket paket; // структура в которую заходят данные с радиомодуля
 RadioData radiodata (radio, paket);
+float latitude = 50.4333;
+float longitude = 30.6167;
 
-String forecastRequest =  "https://api.openweathermap.org/data/2.5/forecast?lat=50.4333&lon=30.6167&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
+String forecastRequest =  "https://api.openweathermap.org/data/2.5/forecast?lat="+String(latitude,4)+"&lon="+String(longitude,4)+"&appid=f2af430fc3518278afe78c607fbf2623&units=metric";
 String timeDataRequest1 = "time.ntp.org.ua";
 String timeDataRequest2 = "pool.ntp.org.ua";
 String currencyRequest  = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchangenew?&jsonvalcode=EUR&date=20260403";
@@ -67,6 +69,7 @@ ForecastPage forecastpage(tft, dataresiver);
 SettingPage settingpage(tft);
 CurrencyPage currencypage(tft, dataresiver);
 NetworkPage networkpage(tft, manager, tX, tY);
+LocationPage locationpage(tft, manager, tX, tY);
 
 
             
@@ -76,7 +79,7 @@ void setup()
 { 
   //esp_task_wdt_init(5, true);  // Инициализация WatchDog
   //esp_task_wdt_add(NULL);      // Следим за Loop
- // wifi.begin();
+  wifi.begin();
   Wire.begin(21, 22);
   Serial.begin(9600);
   gl_touch.begin();
@@ -115,12 +118,12 @@ void loop()
 {   
   
        
-      // wifi.update();
+       wifi.update();
        if(WiFi.status() == WL_CONNECTED)
        {
           mainpage.lastWiFi = true;
           timedata.sinhroTimeData();  // Синхронизация должна делаться единожды!!!!!!!!!!
-         if(serialiter == 160)
+         if(serialiter == 60)
          {
           Serial.println(currency.responseBank); // отладка закоментить после отладки
           dataresiver.parseCurrencyFromJsonDoc(currency.getDocBank(), dataresiver.currencyarray);
@@ -150,8 +153,8 @@ void loop()
        Serial.println("Координаты У в касании :"); Serial.println(tY);
       }else
       {
-        tX = 0;
-        tY = 0;
+        tX = -1;
+        tY = -1;
         structtouch.x = tX;
         structtouch.y = tY;
         structtouch.pressed = false;

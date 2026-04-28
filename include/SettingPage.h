@@ -4,16 +4,20 @@
 #include "TFT_eSPI.h"
 #include "PageManager.h"
 #include "NetworkPage.h"
+#include "LocationPage.h"
 
+class LocationPage;
 class NetworkPage;
 extern PageManager manager;
 extern NetworkPage networkpage;
+extern LocationPage locationpage;
 
 class SettingPage : public Page
 {  
    private:
      Button btn_exit;
      Button btn_network;
+     Button btn_location;
      TFT_eSPI& tft;
      
     
